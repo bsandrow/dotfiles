@@ -1,0 +1,7 @@
+#--------
+# Uptime
+#--------
+
+if [ -x $(which uptime 2>/dev/null) ]; then
+    echo "uptime: $(uptime)"
+fi
