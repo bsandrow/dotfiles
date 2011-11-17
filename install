@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+import glob
+import os
+import shutil
+import sys
+
+linkables     = glob.glob("*/*.symlink")
+overwrite_all = False
+skip_all      = False
+backup_all    = False
+
+for linkable in linkables:
+    fname_base = linkable.split('/')[-1].split('.symlink')[0]
+    target     = os.path.join(os.environ['HOME'], '.%s' % fname_base)
+    skip       = False
+    overwrite  = False
+    backup     = False
+
+    if os.path.lexists(target):
+        if not (skip_all or backup_all or overwrite_all):
+            prompt = "What to do? ([s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all) "
+            print "%s already exists." % target
+            action = raw_input(prompt).strip()
+            if action in 'sS':
+                skip_all = (action == 'S')
+                continue
+            elif action in 'BboO':
+                overwrite_all = (action == 'O')
+                overwrite     = (action == 'o')
+                backup        = (action == 'b')
+                backup_all    = (action == 'B')
+            else:
+                sys.exit("Invalid input. Aborting")
+
+        if overwrite or overwrite_all:
+            print "-!- Removing: %s." % target
+            if os.path.isdir(target):
+                shutil.rmtree(target)
+            else:
+                os.remove(target)
+
+        if skip or skip_all:
+            print "-!- Skipping: %s." % (target)
+            continue
+
+        if backup or backup_all:
+            print "-!- Moving  : %s => %s." % (target, target + '.backup')
+            os.rename(target, target + '.backup')
+
+    print "-!- Linking : %s => %s." % (target, linkable)
+    os.symlink(linkable, target)
+
+# vim: set ft=python et sts=4 st=4 sw=4 tw=100:
