@@ -48,7 +48,8 @@ for linkable in linkables:
             print "-!- Moving  : %s => %s." % (target, target + '.backup')
             os.rename(target, target + '.backup')
 
-    print "-!- Linking : %s => %s." % (target, linkable)
-    os.symlink(linkable, target)
+    link_source = os.path.join(os.getcwd(), linkable)
+    print "-!- Linking : %s => %s." % (target,  link_source)
+    os.symlink(link_source, target)
 
 # vim: set ft=python et sts=4 st=4 sw=4 tw=100:
