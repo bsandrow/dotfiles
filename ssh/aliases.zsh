@@ -1,16 +1,3 @@
-##########
-## Aliases
-##
-alias ls='ls --color=auto'
-alias ll='ls -l'
-alias llt='ls -lt'
-alias lla='ls -lA'
-alias lss='ls -sh'
-alias grep='grep --color=auto'
-alias gvr='gvim --servername `hostname` --remote-silent'
-alias sandbox='{ test -d $HOME/sandbox || mkdir -p $HOME/sandbox; } && cd $HOME/sandbox'
-alias dotfiles='{ test -d $HOME/projects/dotfiles && cd $HOME/projects/dotfiles; } || echo "No dotfiles checkout @ $HOME/projects/dotfiles"'
-
 # Fix ssh environment variables in remote screen sessions. The 'fixssh' file is
 # created by another script which exports all of the environment variables that
 # need to be updated in the screen session.
