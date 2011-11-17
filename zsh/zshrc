@@ -1,43 +1,56 @@
-# vim:syn=zsh:ft=zsh
+#----------------------------------------
+# Cached Files
+#----------------------------------------
 
-##########
-## ATTRIBUTION
-##
-## This is a modified version of the .zshrc file that I found on
-## github here:
-##    https://github.com/davedash/zsh.d/blob/2f56ab6cc13fe957a86aa5f23312b635d79ffeda/zshrc
-##
-
-##########
-## Setup a cache directory
-##
 zsh_cache=${HOME}/.zsh_cache
 mkdir -p $zsh_cache
 
-##########
-## Initialize completion
-##
+#-----------------
+# Auto-Completion
+#-----------------
+
 autoload -U compinit
 
-if [ $UID -eq 0 ]
-then compinit
-else compinit -d $zsh_cache/zcomp-$HOST
+if [ $UID -eq 0 ]; then
+    # we don't want root screwing with the permissions in the $zsh_cache
+    # directory.
+    compinit
+else
+    compinit -d $zsh_cache/zcomp-$HOST
 fi
 
-##########
-## Compile some files for faster execution
-##
+#-----------
+# Recompile
+#-----------
+
 autoload -U zrecompile
 
-if [ $UID -ne 0 ]
-then for f in ~/.zshrc $zsh_cache/zcomp-$HOST
-     do zrecompile -p $f && rm -f $f.zwc.old
-     done
+if [ $UID -ne 0 ]; then
+    for file in ~/.zshrc $zsh_cache/zcomp-$HOST; do
+        zrecompile -p $file && rm -f $file.zwc.old
+    done
 fi
 
-##########
-## Include all of the zsh snippets
-##
-for zshrc_snippet in ~/.zsh.d/S[0-9][0-9]*.zsh
-do source $zshrc_snippet
+#----------------------------------------
+# Load Everything Else
+#----------------------------------------
+
+export ZSH="$HOME/.dotfiles"
+
+# Dynamically set $ZSH if possible.
+if [ -x $(which realpath) ]; then
+    export ZSH="$(dirname $(realpath $0))"
+fi
+
+for zsh_snippet in $ZSH/**/*.zsh; do
+    source $zsh_snippet
 done
+
+#----------------------------------------
+# Inspiration
+#----------------------------------------
+#
+# [1] https://github.com/davedash/zsh.d/blob/2f56ab6cc13fe957a86aa5f23312b635d79ffeda/zshrc
+# [2] https://github.com/holman/dotfiles/blob/8bb17ea816dc10fd9fbc48f710dd5a2b270f90fe/zsh/zshrc.symlink
+#
+# vim: set syntax=zsh et sts=4 ts=4 sw=4 tw=100:
