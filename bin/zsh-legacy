@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# zsh-legacy - a helper for zsh in legacy environments
+#
+# A script to help out in environments where switching back and forth between
+# new and old versions of zsh happens. Some older versions of zsh will blow up
+# when the encounter a file compiled on a newer version of zsh.
+#
+# Some examples of where this might be useful:
+#     1. Testing a config on newer and older versions as the same user
+#     2. A single home directory setup (e.g. NFS mount) where the systems
+#        have different versions of zsh installed.
+#
+
+echo "Clearing out compiled files..."
+
+for zwcfile in "$HOME/.zsh_cache/"*.zwc "$HOME/.zshrc.zwc"; do
+    [ -f "$zwcfile" ] && {
+        rm -fv "$zwcfile"
+    }
+done
+
+zsh "$@"
