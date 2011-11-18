@@ -3,7 +3,8 @@
 # Misc. Options
 #-------------------------
 
-setopt NOBEEP # No more beeps! Huzzah! \o/
+setopt PROMPT_SUBST # Substitute variables in the $PS1 var (e.g. $HOME would get expanded)
+setopt NOBEEP       # No more beeps! Huzzah! \o/
 
 #-------------------------
 # History
