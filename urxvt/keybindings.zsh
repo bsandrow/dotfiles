@@ -1,16 +1,17 @@
+#----------------------------------------
+# Rxvt Settings
+#----------------------------------------
 
-##########
-## Only Process if we are a URXVT terminal
-##
+# These settings only apply to rxvt/urxvt/rxvt-unicode
 case $TERM in
     rxvt*|urxvt*)
         ;;
     *)
-        if [ "$TERM" = "screen" ] && [ -z "$COLORFGBG" ]; then
-            return
-        fi
+        return
         ;;
 esac
+
+# Rxvt differs form the standard XTerm bindings
 
 bindkey '^?'        backward-delete-char
 bindkey '^[[1~'     beginning-of-line
@@ -27,6 +28,3 @@ bindkey '^[[1;5C'   forward-word
 bindkey '^[[1;5D'   backward-word
 #bindkey '^[[7~'     beginning-of-line
 #bindkey '^[[8~'     end-of-line
-
-
-
