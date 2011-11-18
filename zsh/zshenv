@@ -1,6 +1,0 @@
-# Ignore the system defaults
-IGNORE_SYSTEM_ZSH=1
-
-[ -f "$HOME/.env" ] && source $HOME/.env
-
-# vim:ft=zsh:

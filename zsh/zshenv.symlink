@@ -1,0 +1,81 @@
+#--------------------------------------------------------------------------------
+# No Global Config Files
+#--------------------------------------------------------------------------------
+#   Note: There is no way to ignore the system zshenv file (/etc/zsh/zshenv).
+#
+unsetopt GLOBAL_RCS
+IGNORE_SYSTEM_ZSH=1
+
+#--------------------------------------------------------------------------------
+# Set actual location of dotfiles
+#--------------------------------------------------------------------------------
+
+export ZSH="$HOME/.dotfiles"
+
+# Dynamically set $ZSH if possible.
+if [ -x $(which realpath) ]; then
+    export ZSH="$(dirname $(realpath $0))"
+fi
+
+#--------------------------------------------------------------------------------
+# Paths
+#--------------------------------------------------------------------------------
+
+export PATH='/usr/local/bin:/bin:/usr/bin:/usr/games'
+export SPATH='/usr/local/sbin:/sbin:/usr/sbin'
+export MANPATH='/usr/local/man:/usr/local/share/man:/usr/share/man:/usr/man'
+export LD_LIBRARY_PATH='/usr/local/lib:/lib:/usr/lib'
+
+[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
+[ -d "$HOME/man" ] && export MANPATH="$HOME/man:$MANPATH"
+[ -d "$HOME/share/man" ] && export MANPATH="$HOME/share/man:$MANPATH"
+
+[ -d "$ZSH/bin" ] && export PATH="$ZSH/bin:$PATH"
+
+#--------------------------------------------------------------------------------
+# Text Editing
+#--------------------------------------------------------------------------------
+
+if [ -x $(which vim 2>/dev/null) ]; then
+    export EDITOR='vim' VISUAL='vim'
+else
+    export EDITOR='vi' VISUAL='vi'
+fi
+
+export LESS='-iMR'
+#export LESSCHARSET=latin1
+export PAGER='less'
+
+if which lesspipe >/dev/null 2>&1; then
+    eval `lesspipe`
+fi
+
+#--------------------------------------------------------------------------------
+# Misc. Variables
+#--------------------------------------------------------------------------------
+
+date | egrep -q 'GMT|UTC'                   && export TZ='US/Pacific'
+echo "$TERM" | egrep -q 'xterm|linux|rxvt'  && export COLORTERM=y
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+#export MAIL="$HOME/mail/inbox/"
+#export DH_ALWAYS_EXCLUDE=CVS:.svn:.git
+ZSH_PROMPT=fancy_prompt_1
+
+#--------------------------------------------------------------------------------
+# Local Temp Space
+#--------------------------------------------------------------------------------
+
+export TMPDIR="$HOME/tmp"
+export TMP="$HOME/tmp"
+[ -d "$TMP" ] || mkdir -p "$TMP"
+
+#--------------------------------------------------------------------------------
+# Local Settings
+#--------------------------------------------------------------------------------
+
+if [ -f "$HOME/.local/etc/zsh/zshenv" ]; then
+    source "$HOME/.local/etc/zsh/zshenv"
+fi
+
+# vim: set ft=zsh et ts=4 sw=4 tw=100:

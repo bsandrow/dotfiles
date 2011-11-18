@@ -34,13 +34,7 @@ fi
 #----------------------------------------
 # Load Everything Else
 #----------------------------------------
-
-export ZSH="$HOME/.dotfiles"
-
-# Dynamically set $ZSH if possible.
-if [ -x $(which realpath) ]; then
-    export ZSH="$(dirname $(realpath $0))"
-fi
+# Note: $ZSH set in zshenv
 
 for zsh_snippet in $ZSH/**/*.zsh; do
     source $zsh_snippet
