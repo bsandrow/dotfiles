@@ -13,9 +13,9 @@ IGNORE_SYSTEM_ZSH=1
 export ZSH="$HOME/.dotfiles"
 
 # Dynamically set $ZSH if possible.
-if [ -x $(which realpath) ]; then
-    export ZSH="$(dirname $(realpath $0))"
-fi
+#if [ -x $(which realpath) ]; then
+#    export ZSH="$(dirname $(realpath $0))"
+#fi
 
 #--------------------------------------------------------------------------------
 # Paths
