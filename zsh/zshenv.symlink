@@ -21,7 +21,7 @@ export ZSH="$HOME/.dotfiles"
 # Paths
 #--------------------------------------------------------------------------------
 
-export PATH='/usr/local/bin:/bin:/usr/bin:/usr/games'
+[ -n $PATH ] || export PATH='/usr/local/bin:/bin:/usr/bin:/usr/games'
 export SPATH='/usr/local/sbin:/sbin:/usr/sbin'
 export MANPATH='/usr/local/man:/usr/local/share/man:/usr/share/man:/usr/man'
 export LD_LIBRARY_PATH='/usr/local/lib:/lib:/usr/lib'
