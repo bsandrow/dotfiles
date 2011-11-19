@@ -32,7 +32,7 @@ function display_prompt()
 
 function set_prompt()
 {
-    if [ -n "$1" ]; then
+    if [ -z "$1" ]; then
         echo "usage: set_prompt PROMPT"
         return 1
     fi
@@ -86,7 +86,7 @@ function fancy_prompt_1_setup()
     local decor_end='%F{green})%f'
     local divider='%F{green})-(%f'
     local host_part='%F{blue}%n@%M%f'
-    local path_part='%F{yellow}%d%f'
+    local path_part='%F{yellow}%~%f'
     local time_part='%F{blue}%D %*%f'
     local tty_part='%F{magenta}%y%f'
     local git_branch_display='$__GIT_BRANCH_FORMAT'
@@ -140,7 +140,7 @@ fi
 
 ZSH_PROMPT_RETCODE_TEXT="%(0?..%F{red}%?%f )"
 
-if [ -n "$ZSH_PROMPT" ]; then
+if [ -z "$ZSH_PROMPT" ]; then
     set_prompt 'basic_prompt'
 else
     set_prompt $ZSH_PROMPT
