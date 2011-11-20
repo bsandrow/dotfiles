@@ -41,6 +41,14 @@ for zsh_snippet in $ZSH/**/*.zsh; do
 done
 
 #----------------------------------------
+# Local Settings
+#----------------------------------------
+LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
+if [ -f "$LOCAL_ZSHRC" ]; then
+    source "$LOCAL_ZSHRC"
+fi
+
+#----------------------------------------
 # Inspiration
 #----------------------------------------
 #
