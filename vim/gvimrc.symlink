@@ -14,4 +14,6 @@ endfunction
 " are set by default.
 set guioptions=aceih
 set guifont=Liberation\ Mono\ 9,Terminus\ 9
-colorscheme twilight2
+"colorscheme twilight2
+colorscheme solarized
+set bg=light
