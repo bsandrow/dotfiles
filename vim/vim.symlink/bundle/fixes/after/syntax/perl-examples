@@ -1,0 +1,40 @@
+###
+### Perl Folding Failure Examples
+###
+#
+# Examples of Perl that break the stock folding setup in Vim 7.2 and 7.3 (possibly other versions
+# too)
+#
+sub function()
+{
+    # There should be no fold here
+    sub { }
+
+    # There should be a fold here
+    sub {
+    }
+
+    # There should be another fold here.
+    sub test() {
+    }
+
+    # This sub should fold correctly rather than terminate at the closing } for the outer function
+    function(
+        sub {
+        },
+    );
+}
+
+# This should fold correctly
+sub function() {{
+}}
+
+# This should fold correctly
+sub function() {(
+)}
+
+# This should fold correctly
+sub function() {
+}
+
+# vim:set ft=perl tw=100:
