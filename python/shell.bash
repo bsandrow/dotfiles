@@ -13,4 +13,6 @@ function python_shell()
 
 alias pysh="python_shell"
 
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 # vim: set filetype=sh:
