@@ -1,0 +1,13 @@
+#!/bin/bash
+
+session='main-session'
+
+if tmux has-session -t $session >/dev/null 2>&1; then
+    tmux attach-session -t $session
+else
+    tmux new-session -d -s $session -n 'email' 'mutt' \; \
+         new-window  -d             -n 'music' 'ncmpcpp' \; \
+         new-window  -d             -n 'todo'  'vim ~/docs/todo.md'
+fi
+
+# vim: set ft=sh et ts=4 sw=4 tw=100:
