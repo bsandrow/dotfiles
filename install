@@ -5,51 +5,82 @@ import os
 import shutil
 import sys
 
-linkables     = glob.glob("*/*.symlink")
-overwrite_all = False
-skip_all      = False
-backup_all    = False
+homedir = os.environ['HOME']
 
-for linkable in linkables:
-    fname_base = linkable.split('/')[-1].split('.symlink')[0]
-    target     = os.path.join(os.environ['HOME'], '.%s' % fname_base)
-    skip       = False
-    overwrite  = False
-    backup     = False
+def install_linkables():
+    print "==> Installing *.symlink files."
+    install_items = []
+    for linkable in glob.glob("*/*.symlink"):
+        fname_base = linkable.split('/')[-1].split('.symlink')[0]
+        target     = os.path.join(homedir, ".%s" % fname_base)
+        source     = os.path.join(os.getcwd(), linkable)
+        install_items.append({'target': target, 'source': source})
 
-    if os.path.lexists(target):
-        if not (skip_all or backup_all or overwrite_all):
-            prompt = "What to do? ([s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all) "
-            print "%s already exists." % target
-            action = raw_input(prompt).strip()
-            if action in 'sS':
-                skip_all = (action == 'S')
+    symlink_items(install_items)
+
+def install_bin():
+    print "==> Installing bin/ files."
+    install_items = [
+        { 'source': os.path.join(os.getcwd(), item),
+          'target': os.path.join(homedir, 'bin', os.path.basename(item)),
+        }
+            for item in glob.glob('bin/*')
+    ]
+
+    symlink_items(install_items)
+
+def symlink_items(items):
+    overwrite_all = False
+    skip_all      = False
+    backup_all    = False
+
+    for item in items:
+        target    = item['target']
+        source    = item['source']
+        skip      = False
+        backup    = False
+        overwrite = False
+
+        if os.path.lexists(target):
+            if not (skip_all or backup_all or overwrite_all):
+                prompt = "What to do? ([s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all) "
+                print "%s already exists." % target
+                action = raw_input(prompt).strip()
+                if action in 'sS':
+                    skip_all = (action == 'S')
+                    continue
+                elif action in 'BboO':
+                    overwrite_all = (action == 'O')
+                    overwrite     = (action == 'o')
+                    backup        = (action == 'b')
+                    backup_all    = (action == 'B')
+                else:
+                    sys.exit("Invalid input. Aborting")
+
+            if overwrite or overwrite_all:
+                print "Removing: %s." % target
+                if os.path.isdir(target):
+                    shutil.rmtree(target)
+                else:
+                    os.remove(target)
+
+            if skip or skip_all:
+                print "Skipping: %s." % (target)
                 continue
-            elif action in 'BboO':
-                overwrite_all = (action == 'O')
-                overwrite     = (action == 'o')
-                backup        = (action == 'b')
-                backup_all    = (action == 'B')
-            else:
-                sys.exit("Invalid input. Aborting")
 
-        if overwrite or overwrite_all:
-            print "-!- Removing: %s." % target
-            if os.path.isdir(target):
-                shutil.rmtree(target)
-            else:
-                os.remove(target)
+            if backup or backup_all:
+                print "Moving: %s => %s." % (target, target + '.backup')
+                os.rename(target, target + '.backup')
 
-        if skip or skip_all:
-            print "-!- Skipping: %s." % (target)
-            continue
+        target_dir = os.path.dirname(target)
+        if not os.path.exists(target_dir):
+            print "Making directory: %s" % target_dir
+            os.makedirs(target_dir)
 
-        if backup or backup_all:
-            print "-!- Moving  : %s => %s." % (target, target + '.backup')
-            os.rename(target, target + '.backup')
+        print "Symlinking: %s => %s." % (target,  source)
+        os.symlink(source, target)
 
-    link_source = os.path.join(os.getcwd(), linkable)
-    print "-!- Linking : %s => %s." % (target,  link_source)
-    os.symlink(link_source, target)
+install_linkables()
+install_bin()
 
 # vim: set ft=python et sts=4 st=4 sw=4 tw=100:
