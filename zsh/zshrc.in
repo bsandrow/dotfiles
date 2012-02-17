@@ -36,9 +36,18 @@ fi
 #----------------------------------------
 # Note: $ZSH set in zshenv
 
-for zsh_snippet in $ZSH/**/*.zsh; do
-    source $zsh_snippet
-done
+# for zsh_snippet in $ZSH/**/*.zsh; do
+#     source $zsh_snippet
+# done
+
+#----------------------------------------
+# Work Setup
+#----------------------------------------
+WORKSETUP="$HOME/.dotfiles.work"
+WORKINIT="$WORKSETUP/setup/init.symlink"
+if [ -f  "$WORKINIT" ]; then
+    source $WORKINIT
+fi
 
 #----------------------------------------
 # Local Settings

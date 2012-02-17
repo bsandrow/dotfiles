@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Build all of the separate zsh setup files into a single zshrc file. This
+# aleviates the performance hit during cold-cache startup situations.
+#
+cat $(
+    echo "zsh/zshrc.in" &&
+    find zsh/ -iname '*.zsh' | sort &&
+    find . -iname '*.zsh' | grep -v '^./zsh/'
+    ) > zsh/zshrc.symlink
