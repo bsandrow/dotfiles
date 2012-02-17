@@ -1,0 +1,556 @@
+#----------------------------------------
+# Cached Files
+#----------------------------------------
+
+zsh_cache=${HOME}/.zsh_cache
+mkdir -p $zsh_cache
+
+#-----------------
+# Auto-Completion
+#-----------------
+
+autoload -U compinit
+
+if [ $UID -eq 0 ]; then
+    # we don't want root screwing with the permissions in the $zsh_cache
+    # directory.
+    compinit
+else
+    compinit -d $zsh_cache/zcomp-$HOST
+fi
+
+#-----------
+# Recompile
+#-----------
+
+autoload -U zrecompile
+
+if [ $UID -ne 0 ]; then
+    for file in ~/.zshrc $zsh_cache/zcomp-$HOST; do
+        zrecompile -p $file && rm -f $file.zwc.old
+    done
+fi
+
+#----------------------------------------
+# Load Everything Else
+#----------------------------------------
+# Note: $ZSH set in zshenv
+
+# for zsh_snippet in $ZSH/**/*.zsh; do
+#     source $zsh_snippet
+# done
+
+#----------------------------------------
+# Work Setup
+#----------------------------------------
+WORKSETUP="$HOME/.dotfiles.work"
+WORKINIT="$WORKSETUP/setup/init.symlink"
+if [ -f  "$WORKINIT" ]; then
+    source $WORKINIT
+fi
+
+#----------------------------------------
+# Local Settings
+#----------------------------------------
+LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
+if [ -f "$LOCAL_ZSHRC" ]; then
+    source "$LOCAL_ZSHRC"
+fi
+
+#----------------------------------------
+# Inspiration
+#----------------------------------------
+#
+# [1] https://github.com/davedash/zsh.d/blob/2f56ab6cc13fe957a86aa5f23312b635d79ffeda/zshrc
+# [2] https://github.com/holman/dotfiles/blob/8bb17ea816dc10fd9fbc48f710dd5a2b270f90fe/zsh/zshrc.symlink
+#
+# vim: set syntax=zsh et sts=4 ts=4 sw=4 tw=100:
+#--------------------
+# ls aliases
+#--------------------
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias llt='ls -lt'
+alias lla='ls -lA'
+alias lss='ls -sh'
+
+#--------------------
+# misc. aliases
+#--------------------
+alias grep='grep --color=auto'
+
+#----------------------------------------
+# Auto-Arrays
+#----------------------------------------
+#  These arrays contain lists of shell function names that are meant to be
+#  execute at specific files. Traditionally these were just functions that one
+#  could define, but zsh added the ability to just add them to an array in
+#  4.3.4, which will be auto-matically run through.
+
+#--------------------
+# Reset Arrays
+#--------------------
+#  This prevents us from running into issues when re-sourcing our config from a
+#  running shell.
+
+test -n "$preexec_functions" && unset preexec_functions
+test -n "$precmd_functions"  && unset precmd_functions
+test -n "$chpwd_functions"   && unset chpwd_functions
+
+#--------------------
+# Initialize
+#--------------------
+
+test -n "$preexec_functions" || typeset -ga preexec_functions
+test -n "$precmd_functions"  || typeset -ga precmd_functions
+test -n "$chpwd_functions"   || typeset -ga chpwd_functions
+
+#--------------------
+# Old Versions
+#--------------------
+#  These auto-parsed arrays didn't show up until zsh 4.3.4, so we need to
+#  create some make-shift ones for older versions of zsh.
+
+autoload -U is-at-least
+
+if is-at-least '4.3.4'; then
+    ;
+else
+    function preexec()
+    {
+        for func in $preexec_functions; do
+            eval $func
+        done
+    }
+
+    function precmd()
+    {
+        for func in $precmd_functions; do
+            eval $func
+        done
+    }
+
+    function chpwd()
+    {
+        for func in $chpwd_functions; do
+            eval $func
+        done
+    }
+fi
+
+#----------------------------------------
+# Attribution
+#----------------------------------------
+#
+# [1] http://xanana.ucsc.edu/~wgscott/wordpress_new/wordpress/?p=12
+
+# vim: set ft=zsh et sts=4 st=4 sw=4 fdm=marker
+
+#-------------------------
+# Misc. Options
+#-------------------------
+
+setopt PROMPT_SUBST # Substitute variables in the $PS1 var (e.g. $HOME would get expanded)
+setopt NOBEEP       # No more beeps! Huzzah! \o/
+
+#-------------------------
+# History
+#-------------------------
+
+HISTSIZE=1000
+SAVEHIST=1000
+HISTFILE=~/.zsh_history
+
+setopt SHARE_HISTORY        # Share history across sessions
+setopt HIST_IGNORE_SPACE    # commands starting w/ a space don't go into history
+
+# SHARE_HISTORY seems to imply both of these, at least that's how the manpage
+#   reads, so let's comment them out for now.
+#
+# setopt INC_APPEND_HISTORY   # Incrementally append history to file
+# setopt EXTENDED_HISTORY     # Save the timestamp and duration of commands to history file
+
+#-------------------------
+# LS_COLORS
+#-------------------------
+# Note: dircolors may not like all $TERM strings, so this may need to be
+#       modified in the future.
+
+if type dircolors >/dev/null 2>&1; then
+    eval $(dircolors --bourne-shell)
+fi
+
+# Somehow this ended up in my zshrc. I've seen it in a lot of other zshrcs, and
+# I think that the 'key' array is a way to direcly set keybindings, but I'm not
+# motivated enough to track this down.
+#
+#typeset -g -A key
+
+#---------------
+# Bindings Mode
+#---------------
+#
+#  Though I prefer to use Vim as my editor, I prefer to use Emacs bindings for
+#  my shells. I have no idea what the difference between 'bindkey -e' and
+#  'setopt- o emacs' is though (or if they are synonyms).
+#
+bindkey -e
+
+#-------------------
+# Use Vim-style C-w
+#-------------------
+#
+# I like having more granularity in my C-w binding. I've remapped the default
+# C-w binding to M-w because sometimes there are string with way too many
+# special characters that I just want to quickly axe.
+#
+bindkey '^W'  vi-backward-kill-word
+bindkey 'w' backward-kill-word
+
+
+##########
+## csh compatibility
+##
+setenv() { export $1=$2 }
+
+
+#----------------------------------------
+# Prompt Functions
+#----------------------------------------
+#
+#  display_prompt
+#       Run before each prompt is displayed. If the current prompt theme has
+#       defined a *_generator function, then it will be run here.
+#
+#  set_prompt
+#       Used to set the prompt theme. Toggles the $ZSH_PROMPT variable, and
+#       runs a *_setup function if it's defined.
+#
+function display_prompt()
+{
+    # Locally store the return code for later
+    local return_code=$?
+
+    # No prompt is setup. Do nothing.
+    if [ -z "$ZSH_PROMPT" ]; then
+        return $return_code
+    fi
+
+    # if the current prompt has a generator function defined, then run it.
+    if type "${ZSH_PROMPT}_generator" | grep -q 'shell function'; then
+        eval "${ZSH_PROMPT}_generator"
+    fi
+
+    # Make sure that we preserve the value of $?
+    return $return_code
+}
+
+function set_prompt()
+{
+    if [ -z "$1" ]; then
+        echo "usage: set_prompt PROMPT"
+        return 1
+    fi
+
+    ZSH_PROMPT="$1"
+
+    # If a function named "${ZSH_PROMPT}_setup" exists, run it
+    if type "${ZSH_PROMPT}_setup" | grep -q 'shell function'; then
+        eval "${ZSH_PROMPT}_setup"
+    fi
+}
+
+#----------------------------------------
+# PROMPT: Basic Prompts
+#----------------------------------------
+function bare_prompt_setup()    { export PS1="${PROMPT_RETURN_CODE_TEXT}> "    ; unset ZSH_PROMPT; }
+function plain_prompt_setup()   { export PS1="${PROMPT_RETURN_CODE_TEXT}%m> "  ; unset ZSH_PROMPT; }
+function basic_prompt_setup()   { export PS1="${PROMPT_RETURN_CODE_TEXT}%n@%m> ";unset ZSH_PROMPT; }
+
+#----------------------------------------
+# PROMPT: My Prompt 1
+#----------------------------------------
+#  A Debian-inspired prompt
+#
+function my_prompt_1_setup()
+{
+    local retcode='$ZSH_PROMPT_RETCODE_TEXT'
+    export PROMPT="%{%F{green}%n@%m%f:%F{blue}%~%f\$(git_prompt_info)
+%}$retcode%% "
+}
+
+#----------------------------------------
+# PROMPT: My Prompt 2
+#----------------------------------------
+#  A Debian-inspired prompt
+#
+function my_prompt_2_setup()
+{
+    local retcode='$ZSH_PROMPT_RETCODE_TEXT'
+    export PROMPT="%{[ %F{green}%n@%m%f | %F{blue}$~%f\$(git_prompt_info) ]
+%}$retcode%% "
+}
+
+#----------------------------------------
+# PROMPT: Fancy Prompt 1
+#----------------------------------------
+
+function fancy_prompt_1_setup()
+{
+    local decor_start='%F{green}(%f'
+    local decor_end='%F{green})%f'
+    local divider='%F{green})-(%f'
+    local host_part='%F{blue}%n@%M%f'
+    local path_part='%F{yellow}%~%f'
+    local time_part='%F{blue}%D %*%f'
+    local tty_part='%F{magenta}%y%f'
+    local git_branch_display='$__GIT_BRANCH_FORMAT'
+    local retcode='$ZSH_PROMPT_RETCODE_TEXT'
+    export PROMPT="%{${decor_start}${host_part}${divider}${path_part}${divider}${tty_part}${divider}${time_part}${decor_end}${git_branch_display}
+%}$retcode%F{green}%!%%%f "
+}
+
+function fancy_prompt_1_generator()
+{
+    local GIT_BRANCH_NAME=$(git_branch)
+    local IS_GIT_REPO=$(is_git_repo)
+    __GIT_BRANCH_FORMAT=""
+    test -z "$GIT_BRANCH_NAME" -a "$IS_GIT_REPO" -eq "0" && local GIT_BRANCH_NAME="<null>"
+    test -n "$GIT_BRANCH_NAME" && __GIT_BRANCH_FORMAT="%F{green}-(%fgit:%F{blue}${GIT_BRANCH_NAME}%F{green})%f"
+    export __GIT_BRANCH_FORMAT
+}
+
+#----------------------------------------
+# Git Prompt Functions
+#----------------------------------------
+#  http://nullcreations.net/entries/general/zsh-prompt-to-show-git-branch
+#
+
+function git_prompt_info()
+{
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo " (git:${ref#refs/heads/})"
+}
+
+function is_git_repo()
+{
+    git status >/dev/null 2>/dev/null
+    echo $?
+}
+
+function git_branch()
+{
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+#----------------------------------------
+# Prompt Setup
+#----------------------------------------
+
+autoload zsh/terminfo
+
+if [[ -z "${precmd_functions[(R)display_prompt]}" ]]; then
+    precmd_functions+='display_prompt'
+fi
+
+ZSH_PROMPT_RETCODE_TEXT="%(0?..%F{red}%?%f )"
+
+if [ -z "$ZSH_PROMPT" ]; then
+    set_prompt 'basic_prompt'
+else
+    set_prompt $ZSH_PROMPT
+fi
+
+# vim: set syn=zsh fdm=marker et sts=4 sw=4 ts=4 tw=100:
+#----------------------------------------
+# XTerm Title Functions
+#----------------------------------------
+#  This system allows for use of ZShell's special string expansion vars within
+#  an XTerm title. The value of $XTERM_TITLE will be run through 'print -P'
+#  (thereby expanding the %-vars) after every command.
+
+function set_term_title()
+{
+    case "$1" in
+        default)
+            export XTERM_TITLE="/dev/%l - %n@%m"
+            ;;
+        *)
+            export XTERM_TITLE="$@"
+            ;;
+    esac
+}
+
+function display_term_title()
+{
+    local retval=$?
+    local title_start=$'\e]0;'
+    local title_end=$'\a'
+
+    # A $TERM value of 'linux' is *usually* reserved for Linux VTs which don't
+    # have any titles to set.
+    if [ "$TERM" = "linux" ]; then
+        return $retval
+    fi
+
+    if [ -n "$XTERM_TITLE" ]; then
+        print -Pn "%{${title_start}${XTERM_TITLE}${title_end}%}"
+    fi
+
+    return $retval
+}
+
+# Make this refresh after every command
+if [[ -z "${precmd_functions[(R)display_term_title]}" ]]; then
+    precmd_functions+='display_term_title'
+fi
+
+#----------------------------------------
+# Clear Screen
+#----------------------------------------
+#  When clearing the screen, just push the contents into the scrollback
+#  buffer, rather then completely eliminate them. Terminal emulators
+#  like xfce-terminal and gnome-terminal do this themselves, but xterm
+#  and urxvt don't.
+#
+function clear-screen() {
+    zle -I
+    # set to LINES-2 if prompt is only one line
+    repeat $((LINES-1)) echo
+    'clear'
+}
+
+zle -N clear-screen
+alias clear="clear-screen"
+# Fix ssh environment variables in remote screen sessions. The 'fixssh' file is
+# created by another script which exports all of the environment variables that
+# need to be updated in the screen session.
+#
+# [ When you detach a remote screen session and reattach from a new ssh
+# connection, some of the environment vars used for things like ssh-agent
+# forwarding are not updated. These need to be exported to a eval'able file
+# from the new login shell, before ssh is attached. Then all shells in the ssh
+# session can just run 'fixssh' to import the updated env var values. ]
+alias fixssh='if [ -f "${HOME}/tmp/fixssh" ]; then source "${HOME}/tmp/fixssh"; else echo "No $HOME/tmp/fixssh found!"; fi'
+#----------------------------------------
+# Rxvt Settings
+#----------------------------------------
+
+# These settings only apply to rxvt/urxvt/rxvt-unicode
+case $TERM in
+    rxvt*|urxvt*)
+        ;;
+    *)
+        return
+        ;;
+esac
+
+# Rxvt differs form the standard XTerm bindings
+
+bindkey '^?'        backward-delete-char
+bindkey '^[[1~'     beginning-of-line
+bindkey '^[[4~'     end-of-line
+bindkey '^[[5~'     up-line-or-history
+bindkey '^[[3~'     delete-char
+bindkey '^[[6~'     down-line-or-history
+bindkey '^[[A'      up-line-or-search
+bindkey '^[[D'      backward-char
+bindkey '^[[B'      down-line-or-search
+bindkey '^[[C'      forward-char
+bindkey '^[[2~'     overwrite-mode
+bindkey '^[[1;5C'   forward-word
+bindkey '^[[1;5D'   backward-word
+#bindkey '^[[7~'     beginning-of-line
+#bindkey '^[[8~'     end-of-line
+
+
+###########
+# Find Ack
+#
+function find_ack() {
+    # On Ubuntu/Debian the ack command is ack-grep in the repos, but we might also have installed
+    # 'ack' from source into ~/bin. Check if 'ack' is the command we think it is, otherwise we use
+    # ack-grep.
+    if lsb_release --id | grep -iq 'ubuntu\|debian'; then
+        if [ -x "$(which ack 2> /dev/null)" ] && ack --version | grep -q 'Andy Lester'; then
+            echo "ack"
+        else
+            echo "ack-grep"
+        fi
+    else
+        echo "ack"
+    fi
+}
+alias ack='$(find_ack)'
+
+# vim: set ft=sh et ts=4 sw=4 tw=100:
+### Python Shell
+#
+#  Launch an interactive Python shell.
+#
+function python_shell()
+{
+    [ -x "$PYSHELL" ] || PYSHELL=$(which ipython)
+    [ -x "$PYSHELL" ] || PYSHELL=$(which python)
+    [ -x "$PYSHELL" ] || { echo "Could not find a Python interpreter!" >&2; return 1; }
+
+    $PYSHELL
+}
+
+alias pysh="python_shell"
+
+# Disable the prompt mangling aspect of virtual env
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# vim: set filetype=zsh:
+
+#--------------------
+# SSH Window
+#--------------------
+#  Launch a new screen window with the title set to the host we're connecting
+#  to. Make sure that we suck in a bunch of variables that might be local to
+#  the current shell, but not set (correctly) in the global screen session.
+#
+#function new_ssh_screen_window()
+#{
+#    if [ -n "$STY" ]; then
+#        screen -t "$1" \
+#            env \
+#                SSH_CLIENT="$SSH_CLIENT" \
+#                SSH_TTY="$SSH_TTY" \
+#                SSH_AUTH_SOCK="$SSH_AUTH_SOCK" \
+#                SSH_CONNECTION="SSH_CONNECTION" \
+#                DISPLAY="$DISPLAY" \
+#                ssh "$@"
+#        return 0
+#    else
+#        echo "Not in a screen session!" >&2
+#        return 1
+#    fi
+#}
+#alias sshs='new_ssh_screen_window'
+
+
+#--------------------
+# Screen Title
+#--------------------
+#  Use escape codes to set screen's title. (Note: this doesn't always work due
+#  to permissions).
+#
+function set-screen-title()
+{
+    echo -ne "]83;title '$1'"
+}
+
+alias sttl='set-screen-title $(hostname -s)'
+
+# vim: set syntax=vim et st=4 sw=4 tw=100:
+
+#--------------------------------------------------------------------------------
+# Perlbrew Environment
+#--------------------------------------------------------------------------------
+#  Source the perlbrew setup, if it exists.
+#
+if [ -f "$HOME/perl5/perlbrew/etc/bashrc" ]; then
+    source "$HOME/perl5/perlbrew/etc/bashrc"
+fi
