@@ -1,0 +1,41 @@
+#----------------------------------------
+# Cached Files
+#----------------------------------------
+
+zsh_cache=${HOME}/.zsh_cache
+mkdir -p $zsh_cache
+
+#----------------------------------------
+# Auto-Completion
+#----------------------------------------
+
+autoload -U compinit
+
+if [ $UID -eq 0 ]; then
+    # we don't want root screwing with the permissions in the $zsh_cache
+    # directory.
+    compinit
+else
+    compinit -d $zsh_cache/zcomp-$HOST
+fi
+
+#----------------------------------------
+# Recompile
+#----------------------------------------
+
+autoload -U zrecompile
+
+if [ $UID -ne 0 ]; then
+    for file in ~/.zshrc $zsh_cache/zcomp-$HOST; do
+        zrecompile -p $file && rm -f $file.zwc.old
+    done
+fi
+
+#----------------------------------------
+# Work Setup
+#----------------------------------------
+WORKSETUP="$HOME/.dotfiles.work"
+WORKINIT="$WORKSETUP/setup/init.symlink"
+if [ -f  "$WORKINIT" ]; then
+    source $WORKINIT
+fi

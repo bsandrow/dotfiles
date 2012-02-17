@@ -3,8 +3,17 @@
 # Build all of the separate zsh setup files into a single zshrc file. This
 # aleviates the performance hit during cold-cache startup situations.
 #
-cat $(
-    echo "zsh/zshrc.in" &&
-    find zsh/ -iname '*.zsh' | sort &&
+zsh_files()
+{
+    echo "zsh/zshrc.header.in"
+    find zsh/ -iname '*.zsh' | sort
     find . -iname '*.zsh' | grep -v '^./zsh/'
-    ) > zsh/zshrc.symlink
+    echo "zsh/zshrc.footer.in"
+}
+
+ZSHRC_FILE="zsh/zshrc.symlink"
+rm "$ZSHRC_FILE"
+zsh_files | while read FILE; do
+    echo        >> "$ZSHRC_FILE"
+    cat "$FILE" >> "$ZSHRC_FILE"
+done

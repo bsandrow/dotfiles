@@ -1,3 +1,4 @@
+
 #----------------------------------------
 # Cached Files
 #----------------------------------------
@@ -5,9 +6,9 @@
 zsh_cache=${HOME}/.zsh_cache
 mkdir -p $zsh_cache
 
-#-----------------
+#----------------------------------------
 # Auto-Completion
-#-----------------
+#----------------------------------------
 
 autoload -U compinit
 
@@ -19,9 +20,9 @@ else
     compinit -d $zsh_cache/zcomp-$HOST
 fi
 
-#-----------
+#----------------------------------------
 # Recompile
-#-----------
+#----------------------------------------
 
 autoload -U zrecompile
 
@@ -32,15 +33,6 @@ if [ $UID -ne 0 ]; then
 fi
 
 #----------------------------------------
-# Load Everything Else
-#----------------------------------------
-# Note: $ZSH set in zshenv
-
-# for zsh_snippet in $ZSH/**/*.zsh; do
-#     source $zsh_snippet
-# done
-
-#----------------------------------------
 # Work Setup
 #----------------------------------------
 WORKSETUP="$HOME/.dotfiles.work"
@@ -49,22 +41,6 @@ if [ -f  "$WORKINIT" ]; then
     source $WORKINIT
 fi
 
-#----------------------------------------
-# Local Settings
-#----------------------------------------
-LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
-if [ -f "$LOCAL_ZSHRC" ]; then
-    source "$LOCAL_ZSHRC"
-fi
-
-#----------------------------------------
-# Inspiration
-#----------------------------------------
-#
-# [1] https://github.com/davedash/zsh.d/blob/2f56ab6cc13fe957a86aa5f23312b635d79ffeda/zshrc
-# [2] https://github.com/holman/dotfiles/blob/8bb17ea816dc10fd9fbc48f710dd5a2b270f90fe/zsh/zshrc.symlink
-#
-# vim: set syntax=zsh et sts=4 ts=4 sw=4 tw=100:
 #--------------------
 # ls aliases
 #--------------------
@@ -78,6 +54,7 @@ alias lss='ls -sh'
 # misc. aliases
 #--------------------
 alias grep='grep --color=auto'
+
 
 #----------------------------------------
 # Auto-Arrays
@@ -146,6 +123,7 @@ fi
 
 # vim: set ft=zsh et sts=4 st=4 sw=4 fdm=marker
 
+
 #-------------------------
 # Misc. Options
 #-------------------------
@@ -180,6 +158,7 @@ if type dircolors >/dev/null 2>&1; then
     eval $(dircolors --bourne-shell)
 fi
 
+
 # Somehow this ended up in my zshrc. I've seen it in a lot of other zshrcs, and
 # I think that the 'key' array is a way to direcly set keybindings, but I'm not
 # motivated enough to track this down.
@@ -208,10 +187,12 @@ bindkey '^W'  vi-backward-kill-word
 bindkey 'w' backward-kill-word
 
 
+
 ##########
 ## csh compatibility
 ##
 setenv() { export $1=$2 }
+
 
 
 #----------------------------------------
@@ -362,6 +343,7 @@ else
 fi
 
 # vim: set syn=zsh fdm=marker et sts=4 sw=4 ts=4 tw=100:
+
 #----------------------------------------
 # XTerm Title Functions
 #----------------------------------------
@@ -422,6 +404,7 @@ function clear-screen() {
 
 zle -N clear-screen
 alias clear="clear-screen"
+
 # Fix ssh environment variables in remote screen sessions. The 'fixssh' file is
 # created by another script which exports all of the environment variables that
 # need to be updated in the screen session.
@@ -432,6 +415,7 @@ alias clear="clear-screen"
 # from the new login shell, before ssh is attached. Then all shells in the ssh
 # session can just run 'fixssh' to import the updated env var values. ]
 alias fixssh='if [ -f "${HOME}/tmp/fixssh" ]; then source "${HOME}/tmp/fixssh"; else echo "No $HOME/tmp/fixssh found!"; fi'
+
 #----------------------------------------
 # Rxvt Settings
 #----------------------------------------
@@ -464,6 +448,7 @@ bindkey '^[[1;5D'   backward-word
 #bindkey '^[[8~'     end-of-line
 
 
+
 ###########
 # Find Ack
 #
@@ -484,6 +469,7 @@ function find_ack() {
 alias ack='$(find_ack)'
 
 # vim: set ft=sh et ts=4 sw=4 tw=100:
+
 ### Python Shell
 #
 #  Launch an interactive Python shell.
@@ -503,6 +489,7 @@ alias pysh="python_shell"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # vim: set filetype=zsh:
+
 
 #--------------------
 # SSH Window
@@ -546,6 +533,7 @@ alias sttl='set-screen-title $(hostname -s)'
 
 # vim: set syntax=vim et st=4 sw=4 tw=100:
 
+
 #--------------------------------------------------------------------------------
 # Perlbrew Environment
 #--------------------------------------------------------------------------------
@@ -554,3 +542,20 @@ alias sttl='set-screen-title $(hostname -s)'
 if [ -f "$HOME/perl5/perlbrew/etc/bashrc" ]; then
     source "$HOME/perl5/perlbrew/etc/bashrc"
 fi
+
+#----------------------------------------
+# Local Settings
+#----------------------------------------
+LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
+if [ -f "$LOCAL_ZSHRC" ]; then
+    source "$LOCAL_ZSHRC"
+fi
+
+#----------------------------------------
+# Inspiration
+#----------------------------------------
+#
+# [1] https://github.com/davedash/zsh.d/blob/2f56ab6cc13fe957a86aa5f23312b635d79ffeda/zshrc
+# [2] https://github.com/holman/dotfiles/blob/8bb17ea816dc10fd9fbc48f710dd5a2b270f90fe/zsh/zshrc.symlink
+#
+# vim: set syntax=zsh et sts=4 ts=4 sw=4 tw=100:
