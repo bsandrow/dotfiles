@@ -1,0 +1,68 @@
+#!/bin/bash
+
+TEMPDIR=$(mktemp -d)
+FILE="$1"
+
+function die_with_help()
+{
+    echo "$@"
+    usage
+    exit 1
+}
+
+function usage()
+{
+    cat <<USAGE
+Usage: tmp-xfer FILE
+
+Automating the process of uploading a file 'somewhere' for a temporary
+exchange. The 'somewhere' is interchangeable and is controlled via the
+\$TMP_XFER_CMD environment variable. This command will be run as such:
+
+    \$TMP_XFER_CMD filename
+
+THe file is wrapped in a zipfile prior to being uploaded.
+USAGE
+}
+
+function sha1()
+{
+    file="$1"
+    echo $(sha1sum "$file" | cut -d' ' -f1 | sha1sum - | cut -d' ' -f1)
+}
+
+function run_command()
+{
+    echo "$@"
+    $@
+}
+
+if [ -z "$FILE" ]; then
+    die_with_help "Error: No file provided"
+fi
+
+if [ ! -f "$FILE" ]; then
+    die_with_help "Error: File does not exist"
+fi
+
+#-----------
+# Prep
+#-----------
+SHA1=$(sha1 "$FILE")
+ZIPFILE="$TEMPDIR/$SHA1.zip"
+run_command zip -r "$ZIPFILE" "$FILE"
+
+#-----------
+# Transfer
+#-----------
+if [ -z "$TMP_XFER_CMD" ]; then
+    die_with_help 'Error: $TMP_XFER_CMD is not set!'
+else
+    run_command $TMP_XFER_CMD "$ZIPFILE"
+fi
+
+#-----------
+# Cleanup
+#-----------
+run_command shred --remove "$ZIPFILE"
+run_command rm -r "$TEMPDIR"
