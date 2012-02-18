@@ -1,7 +1,9 @@
+#----------------------------------------
+# Python
+#----------------------------------------
+
 ### Python Shell
-#
-#  Launch an interactive Python shell.
-#
+
 function python_shell()
 {
     [ -x "$PYSHELL" ] || PYSHELL=$(which ipython)
@@ -10,10 +12,16 @@ function python_shell()
 
     $PYSHELL
 }
-
 alias pysh="python_shell"
 
-# Disable the prompt mangling aspect of virtual env
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+### Virtual Env
 
-# vim: set filetype=zsh:
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export WORKON_HOME="$HOME/.virtualenv"
+
+if [ $(lsb_release --id | cut -d '	' -f 2) = "Ubuntu" ]; then
+    ubuntu_virtualenvwrapper="/etc/bash_completion.d/virtualenvwrapper"
+    if [ -f "$ubuntu_virtualenvwrapper" ]; then
+        source "$ubuntu_virtualenvwrapper"
+    fi
+fi
