@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$WORKDIR" ]; then
+    export WORKDIR="$HOME/work"
+fi
+
+export WORK_USERDATA="$WORKDIR/google-chrome-userdata"
+
+if [ ! -d "$WORK_USERDATA" ]; then
+    mkdir -p "$WORK_USERDATA"
+fi
+
+exec google-chrome --user-data-dir="$WORK_USERDATA"
