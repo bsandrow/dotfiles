@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$WORKDIR" ]; then
+    export WORKDIR="$HOME/work"
+fi
+
+WEECHAT_CONF_DIR="$WORKDIR/conf/weechat"
+if [ ! -d "$WEECHAT_CONF_DIR" ]; then
+    mkdir -p "$WEECHAT_CONF_DIR"
+fi
+
+exec weechat-curses --dir "$WEECHAT_CONF_DIR"

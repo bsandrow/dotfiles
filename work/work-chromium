@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -z "$WORKDIR" ]; then
+    export WORKDIR="$HOME/work"
+fi
+
+export WORK_USERDATA="$WORKDIR/chromium-userdata"
+
+if [ ! -d "$WORK_USERDATA" ]; then
+    mkdir -p "$WORK_USERDATA"
+fi
+
+exec chromium-browser --user-data-dir="$WORK_USERDATA"
