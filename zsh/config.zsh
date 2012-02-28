@@ -1,14 +1,15 @@
 
-#-------------------------
+#----------------------------------------
 # Misc. Options
-#-------------------------
+#----------------------------------------
 
 setopt PROMPT_SUBST # Substitute variables in the $PS1 var (e.g. $HOME would get expanded)
 setopt NOBEEP       # No more beeps! Huzzah! \o/
+setopt NO_NOMATCH   # Don't die when a glob expansion matches no files
 
-#-------------------------
+#----------------------------------------
 # History
-#-------------------------
+#----------------------------------------
 
 HISTSIZE=1000
 SAVEHIST=1000
@@ -23,9 +24,9 @@ setopt HIST_IGNORE_SPACE    # commands starting w/ a space don't go into history
 # setopt INC_APPEND_HISTORY   # Incrementally append history to file
 # setopt EXTENDED_HISTORY     # Save the timestamp and duration of commands to history file
 
-#-------------------------
+#----------------------------------------
 # LS_COLORS
-#-------------------------
+#----------------------------------------
 # Note: dircolors may not like all $TERM strings, so this may need to be
 #       modified in the future.
 
