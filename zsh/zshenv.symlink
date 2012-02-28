@@ -10,27 +10,26 @@ IGNORE_SYSTEM_ZSH=1
 # Set actual location of dotfiles
 #--------------------------------------------------------------------------------
 
-export ZSH="$HOME/.dotfiles"
-
-# Dynamically set $ZSH if possible.
-#if [ -x $(which realpath) ]; then
-#    export ZSH="$(dirname $(realpath $0))"
-#fi
+export DOTFILES_DIR="$HOME/.dotfiles"
 
 #--------------------------------------------------------------------------------
 # Paths
 #--------------------------------------------------------------------------------
 
-[ -n $PATH ] || export PATH='/usr/local/bin:/bin:/usr/bin:/usr/games'
+# Don't stomp on $PATH if it's already set. This is mostly a fallback for
+# environments that don't have anything in $PATH at this point.
+if [ -z "$PATH" ]; then
+    export PATH='/usr/local/bin:/bin:/usr/bin:/usr/games'
+fi
+
+# Standard Paths
 export SPATH='/usr/local/sbin:/sbin:/usr/sbin'
 export MANPATH='/usr/local/man:/usr/local/share/man:/usr/share/man:/usr/man'
 export LD_LIBRARY_PATH='/usr/local/lib:/lib:/usr/lib'
 
-[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
-[ -d "$HOME/man" ] && export MANPATH="$HOME/man:$MANPATH"
-[ -d "$HOME/share/man" ] && export MANPATH="$HOME/share/man:$MANPATH"
-
-[ -d "$ZSH/bin" ] && export PATH="$ZSH/bin:$PATH"
+# Non-Standard Paths
+export PATH="$DOTFILES_DIR/bin:$HOME/bin:$PATH"
+export MANPATH="$HOME/man:$HOME/share/man:$MANPATH"
 
 #--------------------------------------------------------------------------------
 # Text Editing
@@ -73,6 +72,8 @@ export TMP="$HOME/tmp"
 #--------------------------------------------------------------------------------
 # Local Settings
 #--------------------------------------------------------------------------------
+
+export WORKDIR="$HOME/work"
 
 if [ -f "$HOME/.local/etc/zsh/zshenv" ]; then
     source "$HOME/.local/etc/zsh/zshenv"
