@@ -9,8 +9,8 @@ homedir = os.environ.get("HOME", os.path.expanduser('~'))
 workdir = os.environ.get("WORKDIR", os.path.join(homedir, "work"))
 
 def parse_options():
-    parser = argparse.ArgumentParser(description="Read work config settings")
-    parser.add_argument("setting", action="store", help="The configuration setting")
+    parser = argparse.ArgumentParser(description="Read work environment config settings")
+    parser.add_argument("setting", action="store", help="The setting name")
     options = parser.parse_args()
     options.config_file = os.path.join(workdir, "conf", "settings.ini")
     return options
