@@ -30,12 +30,3 @@ if [ $UID -ne 0 ]; then
         zrecompile -p $file && rm -f $file.zwc.old
     done
 fi
-
-#----------------------------------------
-# Work Setup
-#----------------------------------------
-WORKSETUP="$HOME/.dotfiles.work"
-WORKINIT="$WORKSETUP/setup/init.symlink"
-if [ -f  "$WORKINIT" ]; then
-    source $WORKINIT
-fi
