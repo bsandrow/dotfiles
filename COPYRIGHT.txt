@@ -1,0 +1,63 @@
+Copyrighted Files
+=================
+
+The files in this repository are Copyright 2012, Brandon Sandrowicz, with the
+exception of the files listed below in the "Other Files" section.
+
+
+Other Files
+===========
+
+The following paths contain files not copyrighted by me, but distributed under
+permissive licenses. These files should all have attribution/copyright notices
+inline where possible. If I've missed something, notify me and I will update
+the file(s) with copyright / license / attribution.
+
+ * email/mailhops
+ * git/git-wtf
+ * vim/vim.symlink/bundle/bufexplorer
+ * vim/vim.symlink/bundle/file:line
+ * vim/vim.symlink/bundle/gitolite.vim
+ * vim/vim.symlink/bundle/gnupg
+ * vim/vim.symlink/bundle/ini
+ * vim/vim.symlink/bundle/lusty-explorer
+ * vim/vim.symlink/bundle/markdown
+ * vim/vim.symlink/bundle/matchit
+ * vim/vim.symlink/bundle/moin
+ * vim/vim.symlink/bundle/puppet
+ * vim/vim.symlink/bundle/solarized
+ * vim/vim.symlink/bundle/surround
+ * vim/vim.symlink/bundle/vcscommand
+ * vim/vim.symlink/colors/256-jungle.vim
+ * vim/vim.symlink/colors/CloudsMidnight.vim
+ * vim/vim.symlink/colors/DarkDefault.vim
+ * vim/vim.symlink/colors/ansi_blows.vim
+ * vim/vim.symlink/colors/asu1dark.vim
+ * vim/vim.symlink/colors/codeburn.vim
+ * vim/vim.symlink/colors/colorzone.vim
+ * vim/vim.symlink/colors/darkburn.vim
+ * vim/vim.symlink/colors/darkdot.vim
+ * vim/vim.symlink/colors/darkerdesert.vim
+ * vim/vim.symlink/colors/darktango.vim
+ * vim/vim.symlink/colors/desert256.vim
+ * vim/vim.symlink/colors/desertedoceanburnt.vim
+ * vim/vim.symlink/colors/digerati.vim
+ * vim/vim.symlink/colors/gardener.vim
+ * vim/vim.symlink/colors/gentooish.vim
+ * vim/vim.symlink/colors/github.vim
+ * vim/vim.symlink/colors/ir_black.vim
+ * vim/vim.symlink/colors/jellybeans.vim
+ * vim/vim.symlink/colors/lettuce.vim
+ * vim/vim.symlink/colors/matrix.vim
+ * vim/vim.symlink/colors/mayansmoke.vim
+ * vim/vim.symlink/colors/metacosm.vim
+ * vim/vim.symlink/colors/molokai.vim
+ * vim/vim.symlink/colors/moria.vim
+ * vim/vim.symlink/colors/tango-desert.vim
+ * vim/vim.symlink/colors/tango-morning.vim
+ * vim/vim.symlink/colors/tango.vim
+ * vim/vim.symlink/colors/twilight.vim
+ * vim/vim.symlink/colors/twilight2.vim
+ * vim/vim.symlink/colors/vylight.vim
+ * vim/vim.symlink/colors/win9xblueback.vim
+ * vim/vim.symlink/colors/zenburn.vim
