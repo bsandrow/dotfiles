@@ -5,6 +5,7 @@
 #
 bash_header="bash/bashrc.header.in"
 bash_footer="bash/bashrc.footer.in"
+bashrc_outfile="bash/bashrc.symlink"
 
 bash_files()
 {
@@ -20,13 +21,11 @@ bash_files()
     fi
 }
 
-BASHRC_FILE="bash/bashrc.symlink"
-
-if [ -f "$BASHRC_FILE" ]; then
-    rm "$BASHRC_FILE"
+if [ -f "$bashrc_outfile" ]; then
+    rm "$bashrc_outfile"
 fi
 
 bash_files | while read FILE; do
-    echo        >> "$BASHRC_FILE"
-    cat "$FILE" >> "$BASHRC_FILE"
+    echo        >> "$bashrc_outfile"
+    cat "$FILE" >> "$bashrc_outfile"
 done
