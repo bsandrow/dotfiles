@@ -36,25 +36,24 @@ function eval_title()
     echo -n ""
 }
 
-function check_svn()
+function is_in_svn_repo()
 {
-    work_dir="$1"
-    if [ -d "$work_dir/.svn" ]; then
+    if [ -d "$PWD/.svn" ]; then
         return 0
     else
         return 1
     fi
 }
 
-function check_git()
+function is_in_git_repo()
 {
-    work_dir="$1"
-    while [ "$work_dir" != "/" ]
+    dir="$PWD"
+    while [ "$dir" != "/" ]
     do
-        if [ -d "$work_dir/.git" ]; then
+        if [ -d "$dir/.git" ]; then
             return 0
         fi
-        work_dir=`dirname "$work_dir"`
+        dir=$(dirname $dir)
     done
     return 1
 }
@@ -140,9 +139,13 @@ function topbar_prompt_1()
     #        ;;
     #esac
 
-    # add in the RCS type
-    check_svn "$PWD" && rcs_type="${GREEN}svn${RESET_COLORS} | "
-    check_git "$PWD" && rcs_type="${GREEN}git${RESET_COLORS} | "
+    if is_in_svn_repo; then
+        rcs_type="${GREEN}svn${RESET_COLORS} | "
+    fi
+
+    if is_in_git_repo; then
+        rcs_type="${GREEN}git${RESET_COLORS} | "
+    fi
 
     # add the info line
     PS1="$PS1\[[ ${GREEN}$USER@`hostname`${RESET_COLORS} | $rcs_type$GREEN${PWD/$HOME/~}$RESET_COLORS ]\]\n"
@@ -199,8 +202,13 @@ function topbar_prompt_3()
     fi
 
     # add in the RCS type
-    check_svn "$PWD" && rcs_type="svn"
-    check_git "$PWD" && rcs_type="git"
+    if is_in_svn_repo; then
+        rcs_type="svn"
+    fi
+
+    if is_in_git_repo; then
+        rcs_type="git"
+    fi
 
     # add the info line
     PS1="$PS1\[[ ${GREEN}$USER@`hostname`${RESET_COLORS} | $BLUE${PWD//$HOME/~}$RESET_COLORS "
