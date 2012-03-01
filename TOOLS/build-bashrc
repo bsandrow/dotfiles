@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# Build all of the separate zsh setup files into a single zshrc file. This
+# aleviates the performance hit during cold-cache startup situations.
+#
+bash_header="bash/bashrc.header.in"
+bash_footer="bash/bashrc.footer.in"
+
+bash_files()
+{
+    if [ -f "$bash_header" ]; then
+        echo "$bash_header"
+    fi
+
+    find bash/ -iname '*.bash' | sort
+    find . -iname '*.bash' | grep -v '^./bash/'
+
+    if [ -f "$bash_footer" ]; then
+        echo "$bash_footer"
+    fi
+}
+
+BASHRC_FILE="bash/bashrc.symlink"
+
+if [ -f "$BASHRC_FILE" ]; then
+    rm "$BASHRC_FILE"
+fi
+
+bash_files | while read FILE; do
+    echo        >> "$BASHRC_FILE"
+    cat "$FILE" >> "$BASHRC_FILE"
+done
