@@ -4,18 +4,18 @@
 
 # ANSI Term Color Escape Sequences
 #
-green="\e[32m"
-green_bold="\e[32;1m"
-blue="\e[34m"
-blue_bold="\e[34;1m"
-red="\e[31m"
-red_bold="\e[31;1m"
-reset="\e[0m"
+     green="\e[32m"
+green_bold="\e[32;01m"
+      blue="\e[34m"
+ blue_bold="\e[34;01m"
+       red="\e[31m"
+  red_bold="\e[31;01m"
+     reset="\e[00m"
 
 # XTerm Title Escape Sequences
 #
 t_start="\[\033]0;"
-t_end="\007\]"
+  t_end="\007\]"
 
 # Choose a Prompt
 #
@@ -77,9 +77,9 @@ function debian_default_prompt()
     title=$(eval_title "\[\e]0;\u@\h: \w\a\]")
 
     if [ -z "$BASH_USE_COLOR_PROMPT" ]; then
-        export PS1="$title"'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+        export PS1="$title\${debian_chroot:+(\$debian_chroot)}\u@\h:\w\\$ "
     else
-        export PS1="$title"'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+        export PS1="$title\${debian_chroot:+(\$debian_chroot)}\[$green_bold\]\u@\h\[$reset\]:\[$blue_bold\]\w\[$reset\]\\$ "
     fi
 }
 
