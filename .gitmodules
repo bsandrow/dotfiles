@@ -1,0 +1,3 @@
+[submodule "diff_painter"]
+	path = diff_painter
+	url = git://github.com/wickline/diff_painter.git
