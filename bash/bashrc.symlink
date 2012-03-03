@@ -5,7 +5,6 @@
 
 # we don't need any of this stuff on non-interactive sessions
 [ -z "$PS1" ] && return
-
 #---------------------------------------
 # Aliases
 #---------------------------------------
@@ -25,7 +24,6 @@ alias clear='COUNT=$((LINES)); while [[ $COUNT -gt 0 ]]; do echo; COUNT=$((COUNT
 #       disabled on systems running an older ls (or non-gnu systems)
 alias dir='ls --format=vertical --group-directories-first'
 alias vdir='ls --format=long --group-directories-first'
-
 #---------------------------------------
 # Dir Colors
 #---------------------------------------
@@ -34,7 +32,6 @@ if [ -x /usr/bin/dircolors ]
 then
     eval "`dircolors --bourne-shell`"
 fi
-
 #---------------------------------------
 # Environment
 #---------------------------------------
@@ -43,7 +40,6 @@ export GPG_TTY=`tty`
 
 BASH_USE_COLOR_PROMPT=1
 BASH_DONT_CLOBBER_SCREEN=1
-
 #---------------------------------------
 # Prompt
 #---------------------------------------
