@@ -142,13 +142,13 @@ function topbar_prompt()
     fi
 
     if [ $RETURN_VAL -ne 0 ]; then
-        RETURN_VAL_STR=$(printf "\[$red\]%s\[$reset\]" "$RETURN_VAL")
+        RETURN_VAL_STR=$(printf "\[$red\]%s\[$reset\] " "$RETURN_VAL")
     fi
 
-    if [ -n "$REPO_STR"]; then
-        export PS1="\[[ $HOST_STR | $DIRECTORY_STR | $REPO_STR ]\]\n$RETURN_VAL_STR \!>"
+    if [ -n "$REPO_STR" ]; then
+        export PS1="\[[ $HOST_STR | $DIRECTORY_STR | $REPO_STR ]\]\n$RETURN_VAL_STR\!% "
     else
-        export PS1="\[[ $HOST_STR | $DIRECTORY_STR ]\]\n"
+        export PS1="\[[ $HOST_STR | $DIRECTORY_STR ]\]\n$RETURN_VAL_STR\!% "
     fi
 
     unset HOST_STR DIRECTORY_STR REPO_STR RETURN_VAL_STR

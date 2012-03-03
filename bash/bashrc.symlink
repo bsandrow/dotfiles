@@ -48,21 +48,28 @@ BASH_DONT_CLOBBER_SCREEN=1
 # Prompt
 #---------------------------------------
 
-#term color escape sequences
-GREEN="\e[32m"
-GREEN="\033[32m"
-GREEN_BOLD="\e[32;1m"
-BLUE="\e[34m"
-BLUE_BOLD="\e[34;1m"
-RED="\e[31m"
-RED_BOLD="\e[31;1m"
-RESET_COLORS="\e[0m"
+# ANSI Term Color Escape Sequences
+#
+     green="\e[32m"
+green_bold="\e[32;01m"
+      blue="\e[34m"
+ blue_bold="\e[34;01m"
+       red="\e[31m"
+  red_bold="\e[31;01m"
+     reset="\e[00m"
 
-#dynamic term title escape sequences
+# XTerm Title Escape Sequences
+#
 t_start="\[\033]0;"
-t_end="\007\]"
-#t_start="\[\e]0;"
-#t_end="\a\]"
+  t_end="\007\]"
+
+# Choose a Prompt
+#
+PROMPT_COMMAND=topbar_prompt
+
+#-------------------
+# Prompt Helpers
+#-------------------
 
 # eval_title
 # ----------
@@ -73,55 +80,57 @@ t_end="\007\]"
 
 function eval_title()
 {
-    # the option is turned off
-    [ -z "$BASH_DONT_CLOBBER_SCREEN" ] && { echo -n "$1"; exit; }
+    if [ -n "$BASH_DONT_CLOBBER_SCREEN" -a -n "$STY" ]; then
+        return
+    fi
 
-    # we're not in screen
-    [ -z "$STY" ] && { echo -n "$1"; exit; }
-
-    echo -n ""
+    echo -n "$1"
 }
 
-function check_svn()
+function is_in_svn_repo()
 {
-    work_dir="$1"
-    if [ -d "$work_dir/.svn" ]; then
+    if [ -d "$PWD/.svn" ]; then
         return 0
     else
         return 1
     fi
 }
 
-function check_git()
+function is_in_git_repo()
 {
-    work_dir="$1"
-    while [ "$work_dir" != "/" ]
+    dir="$PWD"
+    while [ "$dir" != "/" ]
     do
-        if [ -d "$work_dir/.git" ]; then
+        if [ -d "$dir/.git" ]; then
             return 0
         fi
-        work_dir=`dirname "$work_dir"`
+        dir=$(dirname $dir)
     done
     return 1
 }
 
-# default_debian_prompt
-# ---------------------
+#-------------------
+# Prompt Setup
+#-------------------
+
+# Default Debian
+# --------------
 # This is just a straight up rip-off of the standard debian/ubuntu prompt line.
 # I've obviously added a couple of features. (like not clobbering screen)
 
 function debian_default_prompt()
 {
-    title=`eval_title "\[\e]0;\u@\h: \w\a\]"`
+    title=$(eval_title "\[\e]0;\u@\h: \w\a\]")
+
     if [ -z "$BASH_USE_COLOR_PROMPT" ]; then
-        export PS1="$title"'${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+        export PS1="$title\${debian_chroot:+(\$debian_chroot)}\u@\h:\w\\$ "
     else
-        export PS1="$title"'${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+        export PS1="$title\${debian_chroot:+(\$debian_chroot)}\[$green_bold\]\u@\h\[$reset\]:\[$blue_bold\]\w\[$reset\]\\$ "
     fi
 }
 
-# default_debian_remix
-# --------------------
+# Default Debian (Remix)
+# ----------------------
 # This is my 'remix' of the default debian prompt. Note that something doesn't
 # like it when \] comes *after* \n instead of before it (i.e. \n\] causes a
 # weird character on screen).
@@ -129,145 +138,68 @@ function debian_default_prompt()
 function debian_default_remix()
 {
     retval=$?
-    title=`eval_title "\[\e]0;\u@\h: \w\a\]"`
+    title=$(eval_title "\[\e]0;\u@\h: \w\a\]")
+
     if [ $retval -eq 0 ]; then
         retval=""
     else
-        retval="\[${RED_BOLD}\]${retval}\[${RESET_COLORS}\]"
+        retval="\[$red_bold\]$retval\[$reset\]"
     fi
+
     if [ -z "$BASH_USE_COLOR_PROMPT" ]; then
         export PS1="$title"'\[${debian_chroot:+($debian_chroot)}\u@\h:\w\]\n% '
     else
-        export PS1="$title"'\[${debian_chroot:+($debian_chroot)}'"${GREEN}\u@\h${RESET_COLORS}:${BLUE}\w${RESET_COLORS}\]\n${retval}% "
+        export PS1="$title"'\[${debian_chroot:+($debian_chroot)}'"$green\u@\h$reset:$blue\w$reset\]\n$retval% "
     fi
 
 }
 
-# Simple Prompt 1
-# ---------------
-# Just a simple prompt that I like to use for remote hosts, I would trim it
-# down to just '> ', but I would lose the information reminding me of which
-# host I'm on.
+# Simple Prompt
+# -------------
 
-function simple_prompt_1()
-{
-    export PS1='\h> '
-}
-
-# Simple Prompt 2
-# ---------------
-# Just another simple prompt that shows the username too.
-
-function simple_prompt_2()
+function simple_prompt()
 {
     export PS1='\u@\h> '
 }
 
-# Topbar Prompt 1
-# ---------------
-# A prompt with a topbar on it.
+# Topbar Prompt
+# -------------
 
-function topbar_prompt_1()
+function topbar_prompt()
 {
     RETURN_VAL=$?
-    PS1=""
-    rcs_type=''
 
-    # If I ever end up in 'sh' then I don't have to worry about garbage
+    # If I ever end up in 'sh' then I don't have to worry about garbage on the
+    # prompt
     if [ -z "$BASH_VERSION" ]; then
-        export PS1="`hostname`> "
-        return
-    fi
-    # dynamic title for x11 terms
-    #case TERM in
-    #    xterm*)
-    #    rxvt*)
-    #        echo -e "$t_start${USER}@${HOSTNAME}:${PWD//$HOME/~}$t_end"
-    #        ;;
-    #esac
-
-    # add in the RCS type
-    check_svn "$PWD" && rcs_type="${GREEN}svn${RESET_COLORS} | "
-    check_git "$PWD" && rcs_type="${GREEN}git${RESET_COLORS} | "
-
-    # add the info line
-    PS1="$PS1\[[ ${GREEN}$USER@`hostname`${RESET_COLORS} | $rcs_type$GREEN${PWD/$HOME/~}$RESET_COLORS ]\]\n"
-
-    # add the prompt (dependent on return value)
-    if [ $RETURN_VAL -ne 0 ]; then
-        PS1="$PS1\[$RED\]$RETURN_VAL\[$RESET_COLORS\]> "
-    else
-        PS1="$PS1> "
-    fi
-
-    export PS1
-}
-
-
-function topbar_prompt_2()
-{
-    RETURN_VAL=$?
-    PS1=""
-
-    # If I ever end up in 'sh' then I don't have to worry about garbage
-    if [ -z "$BASH_VERSION" ]; then
-        export PS1="`hostname`> "
+        export PS1="$(hostname -s)> "
         return
     fi
 
-    # add the info line
-    PS1="$PS1\[ ${BLUE_BOLD}`date +%H:%M`${RESET_COLORS} :: ${BLUE_BOLD}$USER @ `hostname`${RESET_COLORS} :: ${BLUE_BOLD}${PWD/$HOME/~}${RESET_COLORS} \]\n"
+    local HOST_STR=$(printf "$green%s@%s$reset" $USER $(hostname -s))
+    local DIRECTORY_STR=$(printf "$blue%s$reset" "${PWD//$HOME/~}")
+    local REPO_STR=""
+    local RETURN_VAL_STR=""
 
-    # add the prompt (dependent on return value)
-    if [ $RETURN_VAL -ne 0 ]; then
-        PS1="$PS1\[$RED\]$RETURN_VAL\[$RESET_COLORS\]> "
-    else
-        PS1="$PS1> "
+    if is_in_git_repo; then
+        REPO_STR=$(printf "git:%s" "$(__git_ps1 "%s")")
+    elif is_in_svn_repo; then
+        REPO_STR="svn"
     fi
 
-    export PS1
+    if [ $RETURN_VAL -ne 0 ]; then
+        RETURN_VAL_STR=$(printf "\[$red\]%s\[$reset\] " "$RETURN_VAL")
+    fi
+
+    if [ -n "$REPO_STR" ]; then
+        export PS1="\[[ $HOST_STR | $DIRECTORY_STR | $REPO_STR ]\]\n$RETURN_VAL_STR\!% "
+    else
+        export PS1="\[[ $HOST_STR | $DIRECTORY_STR ]\]\n$RETURN_VAL_STR\!% "
+    fi
+
+    unset HOST_STR DIRECTORY_STR REPO_STR RETURN_VAL_STR
 }
 
-# Topbar Prompt 3
-# ---------------
-# This one adds the git branch name and the 'git' after the path
-
-function topbar_prompt_3()
-{
-    RETURN_VAL=$?
-    PS1=""
-    rcs_type=''
-
-    # If I ever end up in 'sh' then I don't have to worry about garbage
-    if [ -z "$BASH_VERSION" ]; then
-        export PS1="`hostname`> "
-        return
-    fi
-
-    # add in the RCS type
-    check_svn "$PWD" && rcs_type="svn"
-    check_git "$PWD" && rcs_type="git"
-
-    # add the info line
-    PS1="$PS1\[[ ${GREEN}$USER@`hostname`${RESET_COLORS} | $BLUE${PWD//$HOME/~}$RESET_COLORS "
-    if [ "$rcs_type" = 'git' ]; then
-        PS1="$PS1$(__git_ps1 "(%s)") "
-    elif [ "$rcs_type" = 'svn' ]; then
-        PS1="$PS1(svn) "
-    fi
-    PS1="$PS1$RESET_COLORS]\]\n"
-
-    # add the prompt (dependent on return value)
-    if [ $RETURN_VAL -ne 0 ]; then
-        PS1="$PS1\[$RED\]$RETURN_VAL\[$RESET_COLORS\]> "
-    else
-        PS1="$PS1> "
-    fi
-
-    export PS1
-}
-
-PROMPT_COMMAND=topbar_prompt_3
 
 
 # Bash-completion for ssh
@@ -364,6 +296,15 @@ if [ $(lsb_release --id | cut -d '	' -f 2) = "Ubuntu" ]; then
     if [ -f "$ubuntu_virtualenvwrapper" ]; then
         source "$ubuntu_virtualenvwrapper"
     fi
+fi
+
+#----------------------------------------
+# Work Settings
+#----------------------------------------
+
+WORK_BASHRC="$WORKDIR/conf/dotfiles/bash/bashrc"
+if [ -f "$WORK_BASHRC" ]; then
+    source "$WORK_BASHRC"
 fi
 
 #----------------------------------------
@@ -2087,3 +2028,13 @@ complete -o default -o nospace -F _gitk gitk
 if [ Cygwin = "$(uname -o 2>/dev/null)" ]; then
 complete -o default -o nospace -F _git git.exe
 fi
+
+#----------------------------------------
+# Local Settings
+#----------------------------------------
+LOCAL_BASHRC="$HOME/.local/etc/bash/bashrc"
+if [ -f "$LOCAL_BASHRC" ]; then
+    source "$LOCAL_BASHRC"
+fi
+
+# vim:set ft=sh:
