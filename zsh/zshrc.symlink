@@ -32,15 +32,6 @@ if [ $UID -ne 0 ]; then
     done
 fi
 
-#----------------------------------------
-# Work Setup
-#----------------------------------------
-WORKSETUP="$HOME/.dotfiles.work"
-WORKINIT="$WORKSETUP/setup/init.symlink"
-if [ -f  "$WORKINIT" ]; then
-    source $WORKINIT
-fi
-
 #--------------------
 # ls aliases
 #--------------------
@@ -499,6 +490,14 @@ if [ $(lsb_release --id | cut -d '	' -f 2) = "Ubuntu" ]; then
     if [ -f "$ubuntu_virtualenvwrapper" ]; then
         source "$ubuntu_virtualenvwrapper"
     fi
+fi
+
+#----------------------------------------
+# Work Settings
+#----------------------------------------
+WORK_ZSHRC="$WORKDIR/conf/dotfiles/zsh/zshrc"
+if [ -f "$WORK_ZSHRC" ]; then
+    source $WORK_ZSHRC
 fi
 
 
