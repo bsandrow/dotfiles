@@ -31,7 +31,6 @@ if [ $UID -ne 0 ]; then
         zrecompile -p $file && rm -f $file.zwc.old
     done
 fi
-
 #--------------------
 # ls aliases
 #--------------------
@@ -45,7 +44,6 @@ alias lss='ls -sh'
 # misc. aliases
 #--------------------
 alias grep='grep --color=auto'
-
 
 #----------------------------------------
 # Auto-Arrays
@@ -114,7 +112,6 @@ fi
 
 # vim: set ft=zsh et sts=4 st=4 sw=4 fdm=marker
 
-
 #----------------------------------------
 # Misc. Options
 #----------------------------------------
@@ -150,7 +147,6 @@ if type dircolors >/dev/null 2>&1; then
     eval $(dircolors --bourne-shell)
 fi
 
-
 # Somehow this ended up in my zshrc. I've seen it in a lot of other zshrcs, and
 # I think that the 'key' array is a way to direcly set keybindings, but I'm not
 # motivated enough to track this down.
@@ -179,12 +175,10 @@ bindkey '^W'  vi-backward-kill-word
 bindkey 'w' backward-kill-word
 
 
-
 ##########
 ## csh compatibility
 ##
 setenv() { export $1=$2 }
-
 
 
 #----------------------------------------
@@ -335,7 +329,6 @@ else
 fi
 
 # vim: set syn=zsh fdm=marker et sts=4 sw=4 ts=4 tw=100:
-
 #----------------------------------------
 # XTerm Title Functions
 #----------------------------------------
