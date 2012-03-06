@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+
+import os
+import subprocess
+import sys
+
+# Turn off buffering
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
+backups = {
+    'helium': [
+        {
+            'name' : 'bjs-home',
+            'root' : '/home/bjs',
+            'files': [
+                'worklib/',
+                'books/',
+                'docslib/',
+                'Images/',
+                'projects/',
+                'mail/',
+            ],
+        },
+        {
+            'name' : 'media',
+            'root' : '/home/bjs',
+            'files': [
+                # 'HomeVideos/',
+                'photos.cleanup/',
+                'photos.test/',
+                'photos.new/',
+                # 'photos/',
+                # 'mirrors/',
+                # 'Music/',
+                # 'music.archive/',
+            ],
+        },
+    ],
+}
+
+settings = {
+    'root'   : '/media/hydrogen',
+    'base'   : 'backups',
+    'logfile': None,
+}
+
+def mkdir(dir):
+    if not os.path.exists(dir):
+        print "~command~ mkdir -p '%s'" % dir
+        os.makedirs(dir)
+
+def rsync(source, target):
+    command = [ 'rsync', '-avz', '--delete', source, target ]
+    print "~command~ %s" % ' '.join(command)
+    subprocess.call(command, stderr=subprocess.STDOUT)
+
+def run_backups():
+    backup_root = os.path.join(settings['root'], settings['base'])
+
+    for host in backups:
+        for backup_group in backups[host]:
+            basedir = backup_group['root']
+            name    = backup_group['name']
+            files   = backup_group['files']
+            for dir in files:
+                source = os.path.join(basedir, dir)
+                dest   = os.path.join(backup_root, "%s-%s" % (host, name), dir)
+                print "--------------------------------------"
+                print "  dest   = %s" % dest
+                print "  source = %s" % source
+                print "--------------------------------------"
+                mkdir(dest)
+                rsync(source, dest)
+
+def main():
+    run_backups()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(">> User interrupt caught. Exiting...")
