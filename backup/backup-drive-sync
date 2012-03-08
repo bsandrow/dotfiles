@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+"""Backup a backup drive to another backup drive.
+
+A simple interface to syncing the contents of one backup drive to another. This
+assumes that SOURCE and DEST are the filesystem labels of the drives that you
+want to sync and that they are mounted under /media. Exits with an error if
+assumed drive mount points are not found. Also assumes that you want to sync
+the filesystem root on both drives, though it won't complain if your filesystem
+labels happen to be paths relative to the root of the respective filesystem
+(e.g. 'mydrive/backup-data' rather than 'mydrive').
+"""
+
+import optparse
+import os
+import subprocess
+import sys
+
+from pprint import pprint as PP
+
+def parse_options():
+    """Parse incoming command-line options into an options container"""
+    parser = optparse.OptionParser(description=__doc__, usage="usage: %prog [options] SOURCE DEST")
+    options, args = parser.parse_args()
+
+    if len(args) < 2:
+        parser.error("Not enough arguments.")
+    elif len(args) > 2:
+        parser.error("Too many arguments.")
+
+    options.source, options.dest = args
+
+    return options
+
+def run_command(command, **kwargs):
+    """Run a command, but also log the command that we're running."""
+    print "~COMMAND~ %s" % ' '.join(command)
+    #subprocess.call(command, **kwargs)
+
+def main():
+    options = parse_options()
+
+    source = "/media/%s/" % options.source
+    dest   = "/media/%s/" % options.dest
+
+    if not os.path.isdir(source):
+        sys.exit("Error: directory '%s' does not exist!" % source)
+
+    if not os.path.isdir(dest):
+        sys.exit("Error: directory '%s' does not exist!" % dest)
+
+    run_command(['rsync', '-avz', '--delete', source, dest])
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit("==> Interrupt caught. Quiting...")
