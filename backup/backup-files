@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""A script for syncing media files on a per-host basis."""
+"""A script for syncing files (excluding large media like videos / photo collections) on a per-host basis."""
 
 import os
 import subprocess
@@ -10,21 +10,19 @@ sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
 backups = {
     'helium': [
-        { 'root':'/home/bjs', 'item':'HomeVideos',     },
-        { 'root':'/home/bjs', 'item':'photos.cleanup', },
-        { 'root':'/home/bjs', 'item':'photos.test',    },
-        { 'root':'/home/bjs', 'item':'photos.new',     },
-        # { 'root':'/home/bjs', 'item':'photos',         },
-        { 'root':'/home/bjs', 'item':'mirrors',        },
-        { 'root':'/home/bjs', 'item':'Music',          },
-        { 'root':'/home/bjs', 'item':'music.archive',  },
+        { 'root':'/home/bjs', 'item':'worklib'  },
+        { 'root':'/home/bjs', 'item':'books'    },
+        { 'root':'/home/bjs', 'item':'docslib'  },
+        { 'root':'/home/bjs', 'item':'Images'   },
+        { 'root':'/home/bjs', 'item':'projects' },
+        { 'root':'/home/bjs', 'item':'mail'     },
     ],
 }
 
 settings = {
     'root'   : '/media/hydrogen',
     'base'   : 'backups',
-    'namefmt': '%s-media',
+    'namefmt': '%s-bjs-home',
     'logfile': None,
 }
 
