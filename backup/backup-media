@@ -14,7 +14,7 @@ backups = {
         { 'root':'/home/bjs', 'item':'photos.cleanup', },
         { 'root':'/home/bjs', 'item':'photos.test',    },
         { 'root':'/home/bjs', 'item':'photos.new',     },
-        # { 'root':'/home/bjs', 'item':'photos',         },
+        { 'root':'/home/bjs', 'item':'photos',         },
         { 'root':'/home/bjs', 'item':'mirrors',        },
         { 'root':'/home/bjs', 'item':'Music',          },
         { 'root':'/home/bjs', 'item':'music.archive',  },
