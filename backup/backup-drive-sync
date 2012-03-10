@@ -34,7 +34,7 @@ def parse_options():
 def run_command(command, **kwargs):
     """Run a command, but also log the command that we're running."""
     print "~COMMAND~ %s" % ' '.join(command)
-    #subprocess.call(command, **kwargs)
+    subprocess.call(command, **kwargs)
 
 def main():
     options = parse_options()
