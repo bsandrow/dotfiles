@@ -12,7 +12,7 @@ import sys
 def parse_options():
 
     usage = "%(prog)s [options] --list\n" +\
-            "       %(prog)s [options] template_name filename"
+            "       %(prog)s [options] template_name destination"
 
     parser = argparse.ArgumentParser(usage=usage,description="""Create a new file from a template base.""")
 
@@ -26,7 +26,8 @@ def parse_options():
                         be set with the $TEMPLATE_DIR environment variable.''')
 
     parser.add_argument('template_name', default=None, nargs='?', help='The name of the template to use.')
-    parser.add_argument('filename', default=None, nargs='?', help='The name of the file to base from template.')
+    parser.add_argument('destination',   default=None, nargs='?', help='''The item that you want to
+                        create from the template.''')
 
     options = parser.parse_args()
     options.editor = os.environ.get("EDITOR", os.environ.get("VISUAL", 'nano'))
@@ -37,27 +38,27 @@ def parse_options():
     if not options.template_dir:
         options.template_dir = os.path.dirname( os.path.realpath( sys.argv[0] ) )
 
-    # Without --list, template_name and filename are required.
+    # Without --list, template_name and detination are required.
     if not options.list:
-        if (not options.template_name or not options.filename):
+        if (not options.template_name or not options.destination):
             parser.error('too few arguments')
 
-        options.template_file = filename_from_template_name(options.template_name)
-        options.template_path = os.path.join(options.template_dir, options.template_file)
+        options.template_item = item_name_from_template_name(options.template_name)
+        options.template_path = os.path.join(options.template_dir, options.template_item)
 
         if not os.path.exists(options.template_path):
             parser.error("template does not exist: %s" % options.template_path)
 
     return options
 
-def template_name_from_filename(filename):
-    filename = os.path.basename(filename)
-    if filename.endswith('.skel'):
-        return filename[:-5]
+def template_name_from_item_name(item_name):
+    item_name = os.path.basename(item_name)
+    if item_name.endswith('.skel'):
+        return item_name[:-5]
     else:
-        return filename
+        return item_name
 
-def filename_from_template_name(template_name):
+def item_name_from_template_name(template_name):
     return template_name + '.skel'
 
 def main():
@@ -70,19 +71,19 @@ def main():
         templates = glob.glob(os.path.join(options.template_dir, '*.skel'))
         print "Templates:"
         for template in templates:
-            print "  %s" % template_name_from_filename(template)
+            print "  %s" % template_name_from_item_name(template)
         sys.exit()
 
     if options.verbose:
-        print "Copying '%s' => '%s'" % (options.template_file, options.filename)
+        print "Copying '%s' => '%s'" % (options.template_file, options.destination)
 
     if os.path.isdir(options.template_path):
-        shutil.copytree(options.template_path, options.filename)
+        shutil.copytree(options.template_path, options.destination)
     else:
-        shutil.copy(options.template_path, options.filename)
+        shutil.copy(options.template_path, options.destination)
 
     if options.launch_editor:
-        subprocess.call("%s %s" % (options.editor, options.filename), shell=True)
+        subprocess.call("%s %s" % (options.editor, options.destination), shell=True)
 
 if __name__ == '__main__':
     try:
