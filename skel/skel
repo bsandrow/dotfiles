@@ -76,7 +76,10 @@ def main():
     if options.verbose:
         print "Copying '%s' => '%s'" % (options.template_file, options.filename)
 
-    shutil.copy(options.template_path, options.filename)
+    if os.path.isdir(options.template_path):
+        shutil.copytree(options.template_path, options.filename)
+    else:
+        shutil.copy(options.template_path, options.filename)
 
     if options.launch_editor:
         subprocess.call("%s %s" % (options.editor, options.filename), shell=True)
