@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+
+def parse_options():
+    parser = argparse.ArgumentParser(description="")
+
+    options = parser.parse_args()
+
+    return options
+
+def main():
+    options = parse_options()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(">> Caught user interrupt. Exiting...")
+
+# vim:set ft=python tw=100:
