@@ -15,6 +15,7 @@ the file(s) with copyright / license / attribution.
 
  * email/mailhops
  * git/git-wtf
+ * git/git-publish-branch
  * vim/vim.symlink/bundle/bufexplorer
  * vim/vim.symlink/bundle/file:line
  * vim/vim.symlink/bundle/gitolite.vim
