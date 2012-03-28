@@ -1,7 +1,7 @@
 #----------------------------------------
 # Local Settings
 #----------------------------------------
-LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
+LOCAL_ZSHRC="$HOME/.zshrc.local"
 if [ -f "$LOCAL_ZSHRC" ]; then
     source "$LOCAL_ZSHRC"
 fi
