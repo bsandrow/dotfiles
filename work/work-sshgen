@@ -36,8 +36,8 @@ fi
 
 SSH_CONF_FILE="$HOME/.ssh/config"
 SSH_CONF_DIR="$(dirname $SSH_CONF_FILE)"
-SRC_CONF_FILE="$WORKDIR/conf/ssh/config.in"
-SRC_CONF_DIR="$(dirname $SRC_CONF_FILE)"
+SRC_CONF_FILE="$WORKDIR/conf/ssh_config"
+SSH_KEY_DIR="$WORKDIR/conf/ssh_keys"
 
 WORKNAME=$(basename $WORKDIR)
 START_COMMENT="### BEGIN $WORKNAME SSH CONF ###"
@@ -66,12 +66,12 @@ echo "Appending config to ~/.ssh/config..."
 cat <<EOF >> "$SSH_CONF_FILE"
 
 $START_COMMENT
-$(cat "$SRC_CONF_FILE")
+$(cat "$SRC_CONF_FILE" | sed -e 's:%d/work/conf/ssh_keys:%d/.ssh:g' )
 $END_COMMENT
 EOF
 
 echo "Copying ssh keys over..."
-find "$SRC_CONF_DIR" -iname '*.dsa' -or -iname '*.rsa' -or -iname '*.pub' | while read keyfile; do
+find "$SSH_KEY_DIR" -iname '*.dsa' -or -iname '*.rsa' -or -iname '*.pub' | while read keyfile; do
     cp -v "$keyfile" "$SSH_CONF_DIR/"
 done
 chmod 600 "$SSH_CONF_DIR"/*
