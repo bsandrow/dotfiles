@@ -13,6 +13,7 @@ permissive licenses. These files should all have attribution/copyright notices
 inline where possible. If I've missed something, notify me and I will update
 the file(s) with copyright / license / attribution.
 
+ * ansi-colors/16colors.sh
  * email/mailhops
  * git/git-wtf
  * git/git-publish-branch
