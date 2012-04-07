@@ -1,19 +1,23 @@
 #!/bin/sh
 
+WORKLIB=${WORKLIB:-$HOME/worklib}
+
 usage()
 {
     cat <<EOF
 Usage: $0 workname
 
-Initialize a new work directory (workname) under \$WORK_ROOT.
+Initialize a new work directory (workname) under \$WORKLIB.
+
+(Currently \$WORKLIB = $WORKLIB)
 
 EOF
 }
 
 create_subdir()
 {
-    echo "Creating $WORKDIR/$1..."
-    mkdir -p "$WORKDIR/$1"
+    echo "Creating $NEW_WORKLIB_DIR/$1..."
+    mkdir -p "$NEW_WORKLIB_DIR/$1"
 }
 
 if [ -z "$1" ]; then
@@ -21,13 +25,16 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-if [ -z "$WORK_ROOT" ]; then
-    echo 'Warning: $WORK_ROOT not defined. Falling back to default: ~/work'
-    export WORK_ROOT=$HOME/work
+if [ ! -d "$WORKLIB" ]; then
+    mkdir -p "$WORKLIB"
+    if [ $? -ne 0 ]; then
+        echo "Error: Unable to create worklib root: $WORKLIB" >&2
+        exit 1
+    fi
 fi
 
-echo "Creating workdir for: $1"
-export WORKDIR="$WORK_ROOT/$1"
+NEW_WORKLIB_DIR="$WORKLIB/$1"
+echo "Creating workdir '$1' as '$NEW_WORKLIB_DIR'"
 
 create_subdir "conf"
 create_subdir "docs"
