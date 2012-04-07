@@ -1,0 +1,38 @@
+#!/bin/sh
+
+usage()
+{
+    cat <<EOF
+Usage: $0 workname
+
+Initialize a new work directory (workname) under \$WORK_ROOT.
+
+EOF
+}
+
+create_subdir()
+{
+    echo "Creating $WORKDIR/$1..."
+    mkdir -p "$WORKDIR/$1"
+}
+
+if [ -z "$1" ]; then
+    usage >&2
+    exit 1
+fi
+
+if [ -z "$WORK_ROOT" ]; then
+    echo 'Warning: $WORK_ROOT not defined. Falling back to default: ~/work'
+    export WORK_ROOT=$HOME/work
+fi
+
+echo "Creating workdir for: $1"
+export WORKDIR="$WORK_ROOT/$1"
+
+create_subdir "conf"
+create_subdir "docs"
+create_subdir "forms"
+create_subdir "misc"
+create_subdir "software"
+create_subdir "software/browser-extensions"
+create_subdir "src"
