@@ -461,20 +461,9 @@ alias_ack
 # Python
 #----------------------------------------
 
-### Python Shell
+### Environment
 
-function python_shell()
-{
-    [ -x "$PYSHELL" ] || PYSHELL=$(which ipython)
-    [ -x "$PYSHELL" ] || PYSHELL=$(which python)
-    [ -x "$PYSHELL" ] || { echo "Could not find a Python interpreter!" >&2; return 1; }
-
-    $PYSHELL
-}
-alias pysh="python_shell"
-
-### Virtual Env
-
+export PYPI_GPG_KEY=8FF63A1B
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export WORKON_HOME="$HOME/.virtualenv"
 
@@ -483,12 +472,39 @@ export WORKON_HOME="$HOME/.virtualenv"
 # that this is correct.
 export VIRTUALENVWRAPPER_PYTHON=$(which -a python | grep -v "$WORKON_HOME" | head -1)
 
-if [ $(lsb_release --id | cut -d '	' -f 2) = "Ubuntu" ]; then
-    ubuntu_virtualenvwrapper="/etc/bash_completion.d/virtualenvwrapper"
-    if [ -f "$ubuntu_virtualenvwrapper" ]; then
-        source "$ubuntu_virtualenvwrapper"
+### Aliases
+
+alias pydev="load_virtualenvwrapper"
+alias pysh="python_shell"
+
+### Functions
+
+function python_shell()
+{
+    PYSHELL=${PYSHELL:-$(which ipython)}
+    PYSHELL=${PYSHELL:-$(which python )}
+
+    if [ -x "$PYSHELL" ]; then
+        echo "Error: Could not find a Python interpreter!" >&2
+        return 1
     fi
-fi
+
+    $PYSHELL
+}
+
+function load_virtualenvwrapper()
+{
+    if [ $(lsb_release --id | cut -d '	' -f 2) = "Ubuntu" ]; then
+        ubuntu_virtualenvwrapper="/etc/bash_completion.d/virtualenvwrapper"
+        if [ -f "$ubuntu_virtualenvwrapper" ]; then
+            source "$ubuntu_virtualenvwrapper"
+        else
+            echo "Warning: Could not find virtualenvwrapper setup: $ubuntu_virtualenvwrapper" >&2
+        fi
+    else
+        source virtualenvwrapper
+    fi
+}
 
 #----------------------------------------
 # Work Settings
@@ -555,7 +571,7 @@ fi
 #----------------------------------------
 # Local Settings
 #----------------------------------------
-LOCAL_ZSHRC="$HOME/.local/etc/zsh/zshrc"
+LOCAL_ZSHRC="$HOME/.zshrc.local"
 if [ -f "$LOCAL_ZSHRC" ]; then
     source "$LOCAL_ZSHRC"
 fi
