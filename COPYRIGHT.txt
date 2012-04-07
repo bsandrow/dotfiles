@@ -14,6 +14,7 @@ inline where possible. If I've missed something, notify me and I will update
 the file(s) with copyright / license / attribution.
 
  * ansi-colors/16colors.sh
+ * diff_painter/
  * email/mailhops
  * git/git-wtf
  * git/git-publish-branch
