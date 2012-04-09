@@ -7,10 +7,18 @@ unsetopt GLOBAL_RCS
 IGNORE_SYSTEM_ZSH=1
 
 #--------------------------------------------------------------------------------
-# Set actual location of dotfiles
+# Directories
 #--------------------------------------------------------------------------------
 
 export DOTFILES_DIR="$HOME/.dotfiles"
+export WORKDIR="$HOME/work"
+export TMPDIR="$HOME/tmp"
+export TMP="$HOME/tmp"
+
+if ! mkdir -p "$TMP"; then
+    echo "Error: Could not create directory: $TMP"
+    unset TMP TMPDIR
+fi
 
 #--------------------------------------------------------------------------------
 # Paths
@@ -28,7 +36,7 @@ export MANPATH='/usr/local/man:/usr/local/share/man:/usr/share/man:/usr/man'
 export LD_LIBRARY_PATH='/usr/local/lib:/lib:/usr/lib'
 
 # Non-Standard Paths
-export PATH="$DOTFILES_DIR/bin:$HOME/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 export MANPATH="$HOME/man:$HOME/share/man:$MANPATH"
 
 #--------------------------------------------------------------------------------
@@ -46,37 +54,34 @@ export LESS='-iMR'
 export PAGER='less'
 
 if which lesspipe >/dev/null 2>&1; then
-    eval `lesspipe`
+    eval $(lesspipe)
 fi
 
 #--------------------------------------------------------------------------------
 # Misc. Variables
 #--------------------------------------------------------------------------------
 
-date | egrep -q 'GMT|UTC'                   && export TZ='US/Pacific'
-echo "$TERM" | egrep -q 'xterm|linux|rxvt'  && export COLORTERM=y
+if date | egrep -q 'GMT|UTC'; then
+    export TZ='US/Pacific'
+fi
+
+if echo "$TERM" | egrep -q 'xterm|linux|rxvt'; then
+    export COLORTERM=y
+fi
+
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 #export MAIL="$HOME/mail/inbox/"
 #export DH_ALWAYS_EXCLUDE=CVS:.svn:.git
-ZSH_PROMPT=fancy_prompt_1
-
-#--------------------------------------------------------------------------------
-# Local Temp Space
-#--------------------------------------------------------------------------------
-
-export TMPDIR="$HOME/tmp"
-export TMP="$HOME/tmp"
-[ -d "$TMP" ] || mkdir -p "$TMP"
+ZSH_PROMPT=fancy_prompt
 
 #--------------------------------------------------------------------------------
 # Local Settings
 #--------------------------------------------------------------------------------
 
-export WORKDIR="$HOME/work"
-
-if [ -f "$HOME/.local/etc/zsh/zshenv" ]; then
-    source "$HOME/.local/etc/zsh/zshenv"
+export LOCAL_ZSHENV="$HOME/.zshenv.local"
+if [ -f "$LOCAL_ZSHENV" ]; then
+    source "$LOCAL_ZSHENV"
 fi
 
 # vim: set ft=zsh et ts=4 sw=4 tw=100:
