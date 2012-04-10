@@ -2,6 +2,11 @@
 # Path Variables
 #-------------------------------------------------------------------------------
 
+export TMP="$HOME/tmp"
+export TMPDIR="$HOME/tmp"
+mkdir -p "$TMP"
+
+export GRABSSH_DIR="${TMPDIR:-/tmp}"
 export DOTFILES_DIR="${$DOTFILES_DIR:-$HOME/.dotfiles}"
 
 # Quick exit for non-interactive sessions
