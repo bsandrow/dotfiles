@@ -1,9 +1,9 @@
-#---------------------------------------
-# Prompt
-#---------------------------------------
+#-------------------------------------------------------------------------------
+# Prompt Helpers
+#-------------------------------------------------------------------------------
 
-# ANSI Term Color Escape Sequences
-#
+# ANSI Colors
+# ===========
      green="\e[32m"
 green_bold="\e[32;01m"
       blue="\e[34m"
@@ -12,26 +12,17 @@ green_bold="\e[32;01m"
   red_bold="\e[31;01m"
      reset="\e[00m"
 
-# XTerm Title Escape Sequences
-#
+# XTerm Title
+# ===========
 t_start="\[\033]0;"
   t_end="\007\]"
 
-# Choose a Prompt
-#
-PROMPT_COMMAND=topbar_prompt
-
-#-------------------
-# Prompt Helpers
-#-------------------
-
 # eval_title
-# ----------
+# ==========
 # This is a prevantative measure. We'll leave the title empty if we're in a
 # screen session. This prevents the 'race condition' of both bash and screen
 # trying to set the xterm title, and bash always wins. We'll use the
 # $BASH_DONT_CLOBBER_SCREEN variable to enable/disable this behavior.
-
 function eval_title()
 {
     if [ -n "$BASH_DONT_CLOBBER_SCREEN" -a -n "$STY" ]; then
@@ -41,34 +32,35 @@ function eval_title()
     echo -n "$1"
 }
 
-function is_in_svn_repo()
+# is_svn_repo
+# ===========
+function is_svn_repo()
 {
-    if [ -d "$PWD/.svn" ]; then
-        return 0
-    else
-        return 1
-    fi
+    DIR=${1:-$PWD}
+    test -d "$DIR/.svn"
+    return $?
 }
 
-function is_in_git_repo()
+# is_git_repo
+# ===========
+function is_git_repo()
 {
-    dir="$PWD"
-    while [ "$dir" != "/" ]
-    do
-        if [ -d "$dir/.git" ]; then
+    DIR="${1:-$PWD}"
+    while [ "$DIR" != "/" ]; do
+        if [ -d "$DIR/.git" ]; then
             return 0
         fi
-        dir=$(dirname $dir)
+        DIR=$(dirname $DIR)
     done
     return 1
 }
 
-#-------------------
-# Prompt Setup
-#-------------------
+#-------------------------------------------------------------------------------
+# Prompts
+#-------------------------------------------------------------------------------
 
 # Default Debian
-# --------------
+# ==============
 # This is just a straight up rip-off of the standard debian/ubuntu prompt line.
 # I've obviously added a couple of features. (like not clobbering screen)
 
@@ -84,7 +76,7 @@ function debian_default_prompt()
 }
 
 # Default Debian (Remix)
-# ----------------------
+# ======================
 # This is my 'remix' of the default debian prompt. Note that something doesn't
 # like it when \] comes *after* \n instead of before it (i.e. \n\] causes a
 # weird character on screen).
@@ -109,7 +101,7 @@ function debian_default_remix()
 }
 
 # Simple Prompt
-# -------------
+# =============
 
 function simple_prompt()
 {
@@ -117,7 +109,7 @@ function simple_prompt()
 }
 
 # Topbar Prompt
-# -------------
+# =============
 
 function topbar_prompt()
 {
@@ -135,9 +127,9 @@ function topbar_prompt()
     local REPO_STR=""
     local RETURN_VAL_STR=""
 
-    if is_in_git_repo; then
+    if is_git_repo; then
         REPO_STR=$(printf "git:%s" "$(__git_ps1 "%s")")
-    elif is_in_svn_repo; then
+    elif is_svn_repo; then
         REPO_STR="svn"
     fi
 
