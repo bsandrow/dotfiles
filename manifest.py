@@ -24,12 +24,12 @@ for linkable in glob.glob("*/*.symlink"):
 # Symlink everything in bin/ directly into $HOME/bin/
 
 def format_source(source): return os.path.join(os.getcwd(), source)
-def format_target(target): return os.path.join(homeidr, target)
+def format_target(target): return os.path.join(homedir, target)
 
 manifest['symlinks'] += [
     (
         format_source(item),
-        format_target(os.path.join('bin', os.path.basename(item))
+        format_target(os.path.join('bin', os.path.basename(item)))
     )
     for item in glob.glob('bin/*')
 ]
