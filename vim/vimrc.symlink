@@ -9,6 +9,7 @@
 "
 filetype off
 call pathogen#runtime_append_all_bundles()
+call pathogen#runtime_append_all_bundles('local')
 call pathogen#helptags()
 
 "--------------------------------------------------------------------------------
@@ -149,8 +150,9 @@ let g:sh_fold_enabled = 1   " enable folding for shell file (Note: zsh
 " Localized Settings
 "--------------------------------------------------------------------------------
 "
-if filereadable(expand("$HOME/.local/etc/vimrc"))
-    source $HOME/.local/etc/vimrc
+let g:local_vimrc = expand("$HOME/.vimrc.local")
+if filereadable(g:local_vimrc)
+    execute "source" . g:local_vimrc
 endif
 
 " vim: set syntax=vim:
