@@ -7,7 +7,7 @@ export TMPDIR="$HOME/tmp"
 mkdir -p "$TMP"
 
 export GRABSSH_DIR="${TMPDIR:-/tmp}"
-export DOTFILES_DIR="${$DOTFILES_DIR:-$HOME/.dotfiles}"
+export DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 
 # Quick exit for non-interactive sessions
 if [ -z "$PS1" ]; then
@@ -53,7 +53,7 @@ export GPG_TTY=$(tty)
 # LS_COLORS
 # =========
 if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors --bourne-shell`"
+    eval $(dircolors --bourne-shell)
 fi
 
 #-------------------------------------------------------------------------------
