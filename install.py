@@ -69,10 +69,10 @@ def prompt_for_action(target):
 
 def read_manifest(manifest_file):
     """Read in a manifest, and return a list of (src,dest) tuples"""
-    with open(manifest_file, 'r') as fh:
-        manifest = imp.load_module('<none>', fh, manifest_file,
-                                    ('', 'r', imp.PY_SOURCE) )
-        return manifest.manifest
+    fh = open(manifest_file, 'r')
+    manifest = imp.load_module('<none>', fh, manifest_file, ('', 'r', imp.PY_SOURCE) )
+    fh.close()
+    return manifest.manifest
 
 def bulk_process_symlinks(symlinks):
     action   = None
