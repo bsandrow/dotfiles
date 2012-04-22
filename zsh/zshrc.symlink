@@ -58,6 +58,12 @@ setopt HIST_IGNORE_SPACE    # commands starting w/ a space don't go into history
 # setopt EXTENDED_HISTORY     # Save the timestamp and duration of commands to history file
 
 #-------------------------------------------------------------------------------
+# Auto Functions
+#-------------------------------------------------------------------------------
+source "$DOTFILES_DIR/zsh/lib/auto-functions.zsh"
+
+
+#-------------------------------------------------------------------------------
 # Miscellaneous
 #-------------------------------------------------------------------------------
 

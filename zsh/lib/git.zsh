@@ -15,7 +15,7 @@ function git_current_branch
         echo "<error>"
         return 1
     else
-        echo "${ref#refs/heads}"
+        echo "${ref#refs/heads/}"
     fi
 }
 
