@@ -87,11 +87,13 @@ function fancy_prompt_init()
     local time_part='%F{blue}%D %*%f'
     local tty_part='%F{magenta}%y%f'
 
+    local good_retcode="%F{black}%K{green}:)%k%f"
+    local bad_retcode="%F{white}%K{red}:(%k%f"
+
     local git_branch_display='$__GIT_BRANCH_FORMAT'
-    local retcode='$ZSH_PROMPT_RETCODE_TEXT'
 
     export PROMPT="%{${decor_start}${host_part}${divider}${path_part}${divider}${tty_part}${divider}${time_part}${decor_end}${git_branch_display}
-%}$retcode%F{green}%!%%%f "
+%}%F{green}%!%f %(0?.${good_retcode}.${bad_retcode}) "
 }
 
 function fancy_prompt_generator()
