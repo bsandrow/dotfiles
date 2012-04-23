@@ -84,15 +84,14 @@ function fancy_prompt_init()
 
     local host_part='%F{blue}%n@%M%f'
     local path_part='%F{yellow}%~%f'
-    local time_part='%F{blue}%D %*%f'
-    local tty_part='%F{magenta}%y%f'
+    local time_part='%F{blue}%D{%Y/%m/%d %H:%M}%f'
 
     local good_retcode="%F{black}%K{green}:)%k%f"
     local bad_retcode="%F{white}%K{red}:(%k%f"
 
     local git_branch_display='$__GIT_BRANCH_FORMAT'
 
-    export PROMPT="%{${decor_start}${host_part}${divider}${path_part}${divider}${tty_part}${divider}${time_part}${decor_end}${git_branch_display}
+    export PROMPT="%{${decor_start}${host_part}${divider}${path_part}${divider}${time_part}${decor_end}${git_branch_display}
 %}%F{green}%!%f %(0?.${good_retcode}.${bad_retcode}) "
 }
 
