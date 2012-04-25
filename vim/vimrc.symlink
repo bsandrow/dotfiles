@@ -71,6 +71,9 @@ nnoremap <leader>b  :BufferExplorer<CR>
 nnoremap <leader>f  :FilesystemExplorer<CR>
 nnoremap <leader>r  :FilesystemExplorerFromHere<CR>
 
+" Turn on spell-check
+nnoremap <leader>sc :setlocal spell spelllang=en_us<CR>
+
 "--------------------------------------------------------------------------------
 " Syntax Highlighting
 "--------------------------------------------------------------------------------
