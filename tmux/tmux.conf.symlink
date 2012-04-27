@@ -13,7 +13,7 @@ setw -g window-status-current-fg   default
 set  -g default-terminal "screen-256color"   # Make sure we use screen's 256 color term
 set  -g base-index       1                   # Start indexing the windows at 1 rather than 0
 setw -g mode-mouse       off                 # Disable mouse for selection in copy mode
-set  -g status-left      "[#H]"              # The left side of the status bar
+set  -g status-left      "[#(hostname -s)]"  # The left side of the status bar
 set  -g status-right     "%a %m %b %Y %H:%M" # The right side of the status bar
 
 ## Prefix
