@@ -86,8 +86,11 @@ function fancy_prompt_init()
     local path_part='%F{yellow}%~%f'
     local time_part='%F{blue}%D{%Y/%m/%d %H:%M}%f'
 
-    local good_retcode="%F{black}%K{green}:)%k%f"
-    local bad_retcode="%F{white}%K{red}:(%k%f"
+    #local good_retcode="%F{black}%K{green}:)%k%f"
+    #local bad_retcode="%F{white}%K{red}:(%k%f"
+
+    local good_retcode="%F{green}^_^%f"
+    local bad_retcode="%F{red}x_X%f"
 
     local git_branch_display='$__GIT_BRANCH_FORMAT'
 
