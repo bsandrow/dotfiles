@@ -22,7 +22,12 @@ function git_current_branch
 function is_git_repo()
 {
     dir="${1:-$PWD}"
-    (cd "$dir" && git status >/dev/null 2>/dev/null)
+    dirname=$(dirname "$dir")
+
+    [ -d "$dir/.git" ]   && return 0
+    [ "$dirname" = "/" ] && return 1
+
+    is_git_repo "$dirname"
     return $?
 }
 
