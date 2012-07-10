@@ -2,19 +2,23 @@
 
 ## Colours
 ##
-set  -g status-bg                  default
-set  -g status-fg                  default
+set  -g status-bg                  colour236
+set  -g status-fg                  colour250
+set  -g status-left-bg             colour214
+set  -g status-left-fg             colour16
+set  -g status-left-attr           bold
 setw -g window-status-current-attr bold
-setw -g window-status-current-bg   default
-setw -g window-status-current-fg   default
+setw -g window-status-current-bg   colour240
+setw -g window-status-current-fg   colour230
+set  -g status-justify centre
 
 ## Options
 ##
 set  -g default-terminal "screen-256color"   # Make sure we use screen's 256 color term
 set  -g base-index       1                   # Start indexing the windows at 1 rather than 0
 setw -g mode-mouse       off                 # Disable mouse for selection in copy mode
-set  -g status-left      "[#(hostname -s)]"  # The left side of the status bar
-set  -g status-right     "%a %m %b %Y %H:%M" # The right side of the status bar
+set  -g status-left      " #(hostname -s) "  # The left side of the status bar
+set  -g status-right     "#[fg=colour117,bg=colour17] %b/%m #[fg=colour23,bg=colour117] %H:%M " # The right side of the status bar
 
 ## Prefix
 ##
@@ -30,5 +34,7 @@ unbind-key '%'
 bind-key   '|' split-window -h
 bind-key   'q' last-window
 bind-key   'l' source-file ~/.tmux.conf
+
+
 
 # vim: set ft=conf:
