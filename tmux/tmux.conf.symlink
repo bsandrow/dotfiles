@@ -18,7 +18,7 @@ set  -g default-terminal "screen-256color"   # Make sure we use screen's 256 col
 set  -g base-index       1                   # Start indexing the windows at 1 rather than 0
 setw -g mode-mouse       off                 # Disable mouse for selection in copy mode
 set  -g status-left      " #(hostname -s) "  # The left side of the status bar
-set  -g status-right     "#[fg=colour117,bg=colour17] %b/%m #[fg=colour23,bg=colour117] %H:%M " # The right side of the status bar
+set  -g status-right     "#[fg=colour117,bg=colour17] %b/%d #[fg=colour23,bg=colour117] %H:%M " # The right side of the status bar
 
 ## Prefix
 ##
