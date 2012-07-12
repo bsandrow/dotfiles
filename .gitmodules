@@ -7,3 +7,6 @@
 [submodule "vim/vim.symlink/bundle/Skittles-Berry"]
 	path = vim/vim.symlink/bundle/Skittles-Berry
 	url = https://github.com/vim-scripts/Skittles-Berry.git
+[submodule "vim/vim.symlink/bundle/powerline"]
+	path = vim/vim.symlink/bundle/powerline
+	url = https://github.com/Lokaltog/vim-powerline.git
