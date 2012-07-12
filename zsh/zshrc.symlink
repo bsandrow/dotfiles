@@ -117,20 +117,20 @@ bindkey 'w' backward-kill-word
 source "$DOTFILES_DIR/zsh/lib/git.zsh"
 source "$DOTFILES_DIR/zsh/lib/prompt.zsh"
 
-export PROMPT='%B[%b %F{green}%n@%M%f %F{magenta}%~%f %B]%b${__GIT_BRANCH_FORMAT}${__VENV_FORMAT} %B{%b%(0?.%F{green}^_^%f.%F{red}x_X%f)%B}%b
+export PROMPT='%B[%b %F{green}%n@%M%f %F{magenta}%~%f %B]%b${__GIT_BRANCH_FORMAT}${__VENV_FORMAT} %B(%b%(0?.%F{green}^_^%f.%F{red}x_X%f)%B)%b
 %B%!%b %F{green}>>%f '
 
 function prompt() {
     __GIT_BRANCH_FORMAT=""
     if is_git_repo; then
         local GIT_BRANCH_NAME=$(git_current_branch)
-        export __GIT_BRANCH_FORMAT=" %B{%b%F{magenta}git:${GIT_BRANCH_NAME:-<null>}%f%B}%b"
+        export __GIT_BRANCH_FORMAT=" %B(%b%F{magenta}git:${GIT_BRANCH_NAME:-<null>}%f%B)%b"
     fi
 
     __VENV_FORMAT=""
     if [ -n "$VIRTUAL_ENV" ]; then
         local VENV_NAME=${VIRTUAL_ENV#$WORKON_HOME/}
-        export __VENV_FORMAT=" %B{%b%F{magenta}venv:${VENV_NAME}%f%B}%b"
+        export __VENV_FORMAT=" %B(%b%F{magenta}venv:${VENV_NAME}%f%B)%b"
     fi
 }
 
