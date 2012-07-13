@@ -67,7 +67,6 @@ source "$DOTFILES_DIR/zsh/lib/auto-functions.zsh"
 # Miscellaneous
 #-------------------------------------------------------------------------------
 
-setopt PROMPT_SUBST # Substitute variables in the $PS1 var (e.g. $HOME would get expanded)
 setopt NOBEEP       # No more beeps! Huzzah! \o/
 setopt NO_NOMATCH   # Don't die when a glob expansion matches no files
 
@@ -113,6 +112,9 @@ bindkey 'w' backward-kill-word
 #-------------------------------------------------------------------------------
 # Prompt
 #-------------------------------------------------------------------------------
+
+# Substitute variables in the $PS1 var (e.g. $HOME would get expanded)
+setopt PROMPT_SUBST
 
 source "$DOTFILES_DIR/zsh/lib/git.zsh"
 source "$DOTFILES_DIR/zsh/lib/prompt.zsh"
