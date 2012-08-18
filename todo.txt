@@ -1,5 +1,0 @@
-Milestone #1
-------------
-[ ] Pull in git-publish-branch
-[ ] Synchronize SSH_AGENT_SOCK when you ssh into a box
-[ ] Write a build-bashrc script and refactor for its usage
