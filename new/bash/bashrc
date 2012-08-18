@@ -1,0 +1,17 @@
+## bashrc
+
+[[ -z "$DOTFILES_BASH_DIR" ]] && source "$HOME/.dotfilesrc"
+
+source "$DOTFILES_BASH_DIR/completion.bash"
+source "$DOTFILES_BASH_DIR/aliases.bash"
+source "$DOTFILES_BASH_DIR/prompt.bash"
+
+shopt -s checkwinsize   # check window size after process completion
+shopt -s cdspell        # easy on spelling mistakes
+
+set bell-style none
+
+BASHRC_LOCAL="$HOME/.bashrc.local"
+[ -f "$BASHRC_LOCAL" ] && source "$BASHRC_LOCAL"
+
+# vim:ft=sh

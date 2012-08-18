@@ -1,0 +1,24 @@
+## shell common - Function definitions that are common and useful to all shells
+
+shell_is_bash () { return [ -n "$BASH_VERSION" ]; }
+shell_is_zsh  () { return [ -n "$ZSH_VERSIN"   ]; }
+shell_is_csh  () { return [ -n "$csh_version"  ]; }
+shell_is_tcsh () { return [ -n "$TCSH_VERSION" ]; }
+shell_is_ksh  () { return [ -n "$KSH_VERSION"  ]; }
+
+OSTYPE=${OSTYPE:=$(uname)}
+case "$OSTYPE" in
+    *Linux*|*linux*)     SHELL_PLATFORM='LINUX' ;;
+    *Darwin*|*darwin*)   SHELL_PLATFORM='OSX' ;;
+    *FreeBSD*|*freebsd*) SHELL_PLATFORM='BSD' ;;
+    *)                   SHELL_PLATFORM='OTHER' ;;
+esac
+
+shell_is_linux () { return [ "$SHELL_PLATFORM" = "LINUX" ]; }
+shell_is_osx   () { return [ "$SHELL_PLATFORM" = "OSX"   ]; }
+shell_is_bsd   () { return [ "$SHELL_PLATFORM" = "BSD"   ]; }
+
+is_screen_session () { return [ -n "$STY"  ]; }
+is_tmux_session   () { return [ -n "$TMUX" ]; }
+
+# vim:ft=sh

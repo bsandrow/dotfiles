@@ -1,0 +1,7 @@
+
+PERLBREW_ROOT="${PERLBREW_ROOT:=${HOME}/perl5/perlbrew}"
+PERLBREW_RC="${PERLBREW_RC:=${PERLBREW_ROOT}/etc/bashrc}"
+
+perlbrew_init () { [ -f "$PERLBREW_RC" ] && . "$PERLBREW_RC"; }
+
+# vim:ft=sh

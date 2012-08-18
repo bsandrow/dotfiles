@@ -1,0 +1,35 @@
+## SSH Helpers
+## ~~~~~~~~~~~
+
+export GRABSSH_DIR="${TMPDIR:-/tmp}"
+
+fixssh () {
+    if [ -f "${GRABSSH}/fixssh" ]; then
+        . "${GRABSSH}/fixssh"
+        return 0
+    else
+        echo "No ${GRABSSH}/fixssh found!"
+        return 1
+    fi
+}
+
+grabssh () {
+    local SSH_VARIABLES="SSH_CLIENT SSH_TTY SSH_AUTH_SOCK SSH_CONNECTION DISPLAY"
+
+    if [ -z "$GRABSSH_DIR" ]; then
+        echo "Error: \$GRABSSH_DIR is not set!" >&2
+        exit 1
+    fi
+
+    # grab each variable name and format it as an export statement
+    for x in $SSH_VARIABLES; do
+        (eval echo $x=\$$x) |
+            sed -e '
+                s/=/="/
+                s/$/"/
+                s/^/export /
+            '
+    done 1> $GRABSSH_DIR/fixssh
+}
+
+# vim:ft=sh

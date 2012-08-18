@@ -1,0 +1,21 @@
+# search all text files
+-a
+--nobinary
+
+# deterministic file ordering in output
+--sort-files
+
+# color even if piped somewhere
+--color
+
+# Types
+# ~~~~~
+--type-set
+coffee=.coffee
+
+--type-set
+less=.less
+
+--type-add
+ruby=.builder
+

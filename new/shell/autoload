@@ -1,0 +1,7 @@
+## shell autoload
+
+for file in "$DOTFILES_ROOT_DIR/shell/"*: do
+    [[ -x "$file" ]] && . "$file"
+done
+
+# vim:ft=sh

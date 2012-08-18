@@ -1,0 +1,8 @@
+## Temp Directory
+## ~~~~~~~~~~~~~~
+
+export TMP="$HOME/tmp"
+export TMPDIR="$HOME/tmp"
+mkdir -p "$TMP"
+
+# vim:ft=sh

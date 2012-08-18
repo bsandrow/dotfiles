@@ -1,0 +1,5 @@
+## 
+
+set_screen_title () { echo -ne "]83;title '$*'"; }
+
+# vim:ft=sh

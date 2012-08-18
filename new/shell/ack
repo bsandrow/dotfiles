@@ -1,0 +1,14 @@
+# Debian/Ubuntu package ack as 'ack-grep' (since there is another package named
+# ack), so let's alias ack => ack-grep, but only if the ack in $PATH isn't
+# already a version of ack (e.g. we don't have one installed in ~/bin or via
+# perlbrew). The alternative is to create a shell function that performs this
+# every time we run 'ack'.
+
+LINUX_RELEASE=$(lsb_release --id | sed 's/^Distributor ID:\s\+//')
+case "$LINUX_RELEASE" in
+    *Ubuntu*|*Debian*)
+        which ack 2>/dev/null && ack --version | grep -qi 'andy lester' || alias ack='ack-grep'
+        ;;
+esac
+
+# vim:ft=sh

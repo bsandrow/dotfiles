@@ -1,0 +1,8 @@
+## .bash_profile - called for login shells
+
+source ~/.profile
+
+# include .bashrc if we're an interactive shell
+[[ $- == *i* ]] && source ~/.bashrc
+
+# vim:ft=sh
