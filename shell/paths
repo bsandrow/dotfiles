@@ -11,6 +11,7 @@ export WORKDIR="$HOME/work"
 [ -z "$SPATH"   ] && SPATH="/sbin:/usr/sbin:/usr/local/sbin"
 
 append-path "$HOME/.local/bin"
+append-path "$HOME/bin"
 
 export PATH MANPATH
 
