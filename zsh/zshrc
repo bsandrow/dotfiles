@@ -37,4 +37,5 @@ source "$DOTFILES_ZSH_DIR/colors.zsh"
 ZSHRC_LOCAL="$HOME/.local/zshrc"
 [[ -f "$ZSHRC_LOCAL" ]] && source "$ZSHRC_LOCAL"
 
+true
 # vim:ft=zsh
