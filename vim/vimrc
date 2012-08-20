@@ -157,7 +157,7 @@ set laststatus=2
 "--------------------------------------------------------------------------------
 " Localized Settings
 "--------------------------------------------------------------------------------
-let g:local_vimrc = expand("$HOME/.vimrc.local")
+let g:local_vimrc = expand("$HOME/.vim/local.vim")
 if filereadable(g:local_vimrc)
     execute "source" . g:local_vimrc
 endif
