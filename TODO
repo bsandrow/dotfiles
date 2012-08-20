@@ -1,0 +1,9 @@
+Todo Items
+~~~~~~~~~~
+- Fix the vim situation (probably move it out into it's own repo, and include
+  it as a submodule).
+- Fix the ~/bin situation (probably move the scripts out to the
+  home-desktop.git repo + change that repo to use ~/.local/bin as the install
+  target).
+
+# vim:ft=rst
