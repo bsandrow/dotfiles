@@ -34,6 +34,7 @@ source "$DOTFILES_ZSH_DIR/prompt.zsh"
 source "$DOTFILES_ZSH_DIR/history.zsh"
 source "$DOTFILES_ZSH_DIR/keys.zsh"
 source "$DOTFILES_ZSH_DIR/colors.zsh"
+source "$DOTFILES_ZSH_DIR/gnome-terminal.zsh"
 
 ZSHRC_LOCAL="$HOME/.local/zshrc"
 [[ -f "$ZSHRC_LOCAL" ]] && source "$ZSHRC_LOCAL"
