@@ -1,0 +1,8 @@
+# .zsh_profile
+
+source ~/.profile
+
+is_interactive_shell () { return setopt | grep -q '^interactive$'; }
+is_login_shell       () { return setopt | grep -q '^login$';       }
+
+# vim:ft=sh

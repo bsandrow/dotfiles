@@ -1,0 +1,21 @@
+# Editor
+# ~~~~~
+
+EDITOR='vim'
+VISUAL='vi'
+LESS='-iMR'
+PAGER='less'
+#LESSCHARSET=latin1
+
+if [ ! -x $(which vim) ]; then
+    EDITOR='vi'
+    VISUAL='vi'
+fi
+
+if [ -x $(which lesspipe) ]; then
+    eval $(lesspipe)
+fi
+
+export EDITOR VISUAL LESS PAGER
+
+# vim:ft=sh

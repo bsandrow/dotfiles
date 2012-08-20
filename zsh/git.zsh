@@ -1,11 +1,5 @@
-#-------------------------------------------------------------------------------
-# Git Shell Functions
-#-------------------------------------------------------------------------------
-
-function git_prompt_info()
-{
-    echo " (git:$(git_current_branch))"
-}
+# Git Functions
+# ~~~~~~~~~~~~~
 
 function git_current_branch
 {
@@ -31,7 +25,7 @@ function is_git_repo()
     return $?
 }
 
-# Sources
-# =======
+# Sources:
+# - [1] http://nullcreations.net/entries/general/zsh-prompt-to-show-git-branch
 #
-# [1] http://nullcreations.net/entries/general/zsh-prompt-to-show-git-branch
+# vim:ft=zsh

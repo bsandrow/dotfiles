@@ -1,0 +1,9 @@
+## .zshenv
+
+# Ignore the /etc/* files.
+unsetopt GLOBAL_RCS
+
+local ZSHENV_LOCAL="$HOME/.local/zshenv"
+[[ -f "$ZSHENV_LOCAL" ]] && source "$ZSHENV_LOCAL"
+
+# vim:ft=zsh

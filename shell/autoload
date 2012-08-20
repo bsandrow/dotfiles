@@ -1,6 +1,6 @@
 ## shell autoload
 
-for file in "$DOTFILES_ROOT_DIR/shell/"*: do
+for file in $DOTFILES_ROOT_DIR/shell/*; do
     [[ -x "$file" ]] && . "$file"
 done
 

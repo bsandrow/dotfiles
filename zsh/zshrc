@@ -1,0 +1,39 @@
+# zshrc
+
+[[ -z "$DOTFILES_ZSH_DIR" ]] && source "$HOME/.dotfilesrc"
+
+# Cache
+# ~~~~~
+autoload -U compinit
+autoload -U zrecompile
+export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+
+if [[ $UID -eq 0 ]]; then
+    compinit
+else
+    mkdir -p "$ZSH_CACHE_DIR"
+    compinit -d $ZSH_CACHE_DIR/zcomp-$HOST
+    for file in $DOTFILES_ZSH_DIR/* $ZSH_CACHE_DIR/zcomp-$HOST; do
+        zrecompile -p $file && rm -f $file.zwc.old
+    done
+fi
+
+# Misc. Options
+# ~~~~~~~~~~~~~
+setopt NOBEEP       # No more beeps! Huzzah! \o/
+setopt NO_NOMATCH   # Don't die when a glob expansion matches no files
+
+# Loading
+# ~~~~~~~
+source "$DOTFILES_ZSH_DIR/aliases.zsh"
+source "$DOTFILES_ZSH_DIR/auto-functions.zsh"
+source "$DOTFILES_ZSH_DIR/git.zsh"
+source "$DOTFILES_ZSH_DIR/prompt.zsh"
+source "$DOTFILES_ZSH_DIR/rvxt.zsh"
+source "$DOTFILES_ZSH_DIR/clear-screen.zsh"
+source "$DOTFILES_ZSH_DIR/colors.zsh"
+
+ZSHRC_LOCAL="$HOME/.local/zshrc"
+[[ -f "$ZSHRC_LOCAL" ]] && source "$ZSHRC_LOCAL"
+
+# vim:ft=zsh

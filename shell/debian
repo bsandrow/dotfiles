@@ -1,0 +1,7 @@
+# Debian
+# ~~~~~~
+
+export DH_ALWAYS_EXCLUDE=CVS:.svn:.git
+
+# vim:ft=sh
+

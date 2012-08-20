@@ -1,0 +1,17 @@
+# Paths
+# ~~~~~
+
+prepend-path () { PATH="$1:$PATH"; }
+append-path  () { PATH="$PATH:$1"; }
+
+export WORKDIR="$HOME/work"
+
+[ -z "$MANPATH" ] && MANPATH='/usr/local/man:/usr/local/share/man:/usr/share/man:/usr/man'
+[ -z "$PATH"    ] && PATH="/bin:/usr/bin:/usr/games:/usr/local/bin"
+[ -z "$SPATH"   ] && SPATH="/sbin:/usr/sbin:/usr/local/sbin"
+
+append-path "$HOME/.local/bin"
+
+export PATH MANPATH
+
+# vim:ft=sh
