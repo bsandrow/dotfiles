@@ -7,7 +7,7 @@
 LINUX_RELEASE=$(lsb_release --id | sed 's/^Distributor ID:\s\+//')
 case "$LINUX_RELEASE" in
     *Ubuntu*|*Debian*)
-        which ack 2>/dev/null && ack --version | grep -qi 'andy lester' || alias ack='ack-grep'
+        which ack > /dev/null && ack --version | grep -qi 'andy lester' || alias ack='ack-grep'
         ;;
 esac
 
