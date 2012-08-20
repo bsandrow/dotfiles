@@ -4,7 +4,7 @@
 setopt PROMPT_SUBST
 
 export PS0="%F{202}%n%f in %F{107}%~%f on %F{1}%M%f"
-export PROMPT_EXIT="%(0?.%B%F{40}:)%f%b.%B%F{red}:(%f%b)"
+export PROMPT_EXIT="%(0?.%F{40}\\\$%f.%F{red}\\\$%f)"
 
 function prompt() {
     local STATE
@@ -21,9 +21,9 @@ function prompt() {
     fi
 
     if [ -n "$STATE" ]; then
-        export PROMPT="$PS0 %B[%b $STATE %B]%b\n$PROMPT_EXIT "
+        export PROMPT="$PS0 %B[%b $STATE %B]%b $PROMPT_EXIT "
     else
-        export PROMPT="$PS0\n$PROMPT_EXIT "
+        export PROMPT="$PS0 $PROMPT_EXIT "
     fi
 }
 
