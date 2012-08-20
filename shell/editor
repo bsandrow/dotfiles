@@ -7,12 +7,12 @@ LESS='-iMR'
 PAGER='less'
 #LESSCHARSET=latin1
 
-if [ ! -x $(which vim) ]; then
+if [ ! -x $(which vim 2>/dev/null) ]; then
     EDITOR='vi'
     VISUAL='vi'
 fi
 
-if [ -x $(which lesspipe) ]; then
+if which lesspipe 2>/dev/null; then
     eval $(lesspipe)
 fi
 
