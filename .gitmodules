@@ -6,7 +6,7 @@
 	url = git://gitorious.org/willgit/mainline.git
 [submodule "vim/vim/bundle/skittle_berry"]
 	path = vim/vim/bundle/skittle_berry
-	url = https://github.com/bsandrow/skittles_berry.git
+	url = git://github.com/bsandrow/skittles_berry.git
 [submodule "vim/vim/bundle/powerline"]
 	path = vim/vim/bundle/powerline
-	url = https://github.com/Lokaltog/vim-powerline.git
+	url = git://github.com/Lokaltog/vim-powerline.git
