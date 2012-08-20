@@ -1,11 +1,15 @@
 ## shell common - Function definitions that are common and useful to all shells
 
+## Shell Name
+## ~~~~~~~~~~
 shell_is_bash () { return [ -n "$BASH_VERSION" ]; }
 shell_is_zsh  () { return [ -n "$ZSH_VERSIN"   ]; }
 shell_is_csh  () { return [ -n "$csh_version"  ]; }
 shell_is_tcsh () { return [ -n "$TCSH_VERSION" ]; }
 shell_is_ksh  () { return [ -n "$KSH_VERSION"  ]; }
 
+## Shell Platform
+## ~~~~~~~~~~~~~~
 OSTYPE=${OSTYPE:=$(uname)}
 case "$OSTYPE" in
     *Linux*|*linux*)     SHELL_PLATFORM='LINUX' ;;
@@ -18,7 +22,14 @@ shell_is_linux () { return [ "$SHELL_PLATFORM" = "LINUX" ]; }
 shell_is_osx   () { return [ "$SHELL_PLATFORM" = "OSX"   ]; }
 shell_is_bsd   () { return [ "$SHELL_PLATFORM" = "BSD"   ]; }
 
+## Terminal Multiplexters
+## ~~~~~~~~~~~~~~~~~~~~~~
 is_screen_session () { return [ -n "$STY"  ]; }
 is_tmux_session   () { return [ -n "$TMUX" ]; }
+
+## Misc.
+## ~~~~~
+include_file   () { [ -f "$1" ] && . "$1"; }
+command_exists () { command="$1"; which "$command" >/dev/null 2>/dev/null && [ -x "$(which "$command")" ]; }
 
 # vim:ft=sh
