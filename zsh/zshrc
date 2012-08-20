@@ -27,10 +27,11 @@ setopt NO_NOMATCH   # Don't die when a glob expansion matches no files
 # ~~~~~~~
 source "$DOTFILES_ZSH_DIR/aliases.zsh"
 source "$DOTFILES_ZSH_DIR/auto-functions.zsh"
+source "$DOTFILES_ZSH_DIR/clear-screen.zsh"
 source "$DOTFILES_ZSH_DIR/git.zsh"
 source "$DOTFILES_ZSH_DIR/prompt.zsh"
-source "$DOTFILES_ZSH_DIR/rvxt.zsh"
-source "$DOTFILES_ZSH_DIR/clear-screen.zsh"
+source "$DOTFILES_ZSH_DIR/history.zsh"
+source "$DOTFILES_ZSH_DIR/keys.zsh"
 source "$DOTFILES_ZSH_DIR/colors.zsh"
 
 ZSHRC_LOCAL="$HOME/.local/zshrc"
