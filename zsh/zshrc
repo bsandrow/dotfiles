@@ -1,6 +1,7 @@
 # zshrc
 
 [[ -z "$DOTFILES_ZSH_DIR" ]] && source "$HOME/.dotfilesrc"
+[[ -z "$XDG_CACHE_HOME"   ]] && source "$DOTFILES_ROOT_DIR/shell/xdg_paths"
 
 # Cache
 # ~~~~~
