@@ -1,8 +1,8 @@
 # Paths
 # ~~~~~
 
-prepend-path () { PATH="$1:$PATH"; }
-append-path  () { PATH="$PATH:$1"; }
+prepend_path() { PATH="$1:$PATH"; }
+append_path() { PATH="$PATH:$1"; }
 
 export WORKDIR="$HOME/work"
 
@@ -10,8 +10,8 @@ export WORKDIR="$HOME/work"
 [ -z "$PATH"    ] && PATH="/bin:/usr/bin:/usr/games:/usr/local/bin"
 [ -z "$SPATH"   ] && SPATH="/sbin:/usr/sbin:/usr/local/sbin"
 
-append-path "$HOME/.local/bin"
-append-path "$HOME/bin"
+append_path "$HOME/.local/bin"
+append_path "$HOME/bin"
 
 export PATH MANPATH
 
