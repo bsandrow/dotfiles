@@ -11,7 +11,7 @@ for file in home/*; do
             ;;
         *)
             echo "Linking '$dotfile'..."
-            ln -sf "$PWD/$file" "$HOME/.$dotfile"
+            ln -sfn "$PWD/$file" "$HOME/.$dotfile"
             ;;
     esac
 done
