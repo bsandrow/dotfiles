@@ -3,28 +3,31 @@
 
 setopt PROMPT_SUBST
 
-export PS0="%F{202}%n%f in %F{107}%~%f on %F{1}%M%f"
-export PROMPT_EXIT="%(0?.%F{40}\\\$%f.%F{red}\\\$%f)"
+function wrap_color() { echo "\$FG[$1]$2\$FG[reset]"; }
+function wrap_meta () { echo "\$FG[005]$*\$FG[reset]"; }
+function bold      () { echo "\$FX[bold]$*\$FX[no-bold]"; }
+
+export PS0="$(wrap_color '202' '%n') in $(wrap_color '107' '%~') on $(wrap_color '001' '%M')"
+export PROMPT_EXIT="%(0?.$(wrap_color '040' '\$').$(wrap_color '001' '\$'))"
 
 function prompt() {
-    local STATE
+    metainfo=()
 
     if is_git_repo; then
-        local GIT_BRANCH_NAME=$(git_current_branch)
-        STATE="%F{magenta}git:${GIT_BRANCH_NAME:-<null>}%f"
+        GIT_BRANCH_NAME=$(git_current_branch)
+        metainfo+=("$(wrap_meta "git:${GIT_BRANCH_NAME:-<null>}")")
     fi
 
     if [ -n "$VIRTUAL_ENV" ]; then
-        local VENV_NAME=${VIRTUAL_ENV#$WORKON_HOME/}
-        [ -n "$STATE" ] && STATE="$STATE "
-        STATE="$STATE%F{magenta}venv:${VENV_NAME}%f"
+        virtualenv_name=${VIRTUAL_ENV#$WORKON_HOME/}
+        metainfo+=("$(wrap_meta "venv:${virtualenv_name}")")
     fi
 
-    if [ -n "$STATE" ]; then
-        export PROMPT="$PS0 %B[%b $STATE %B]%b $PROMPT_EXIT "
-    else
-        export PROMPT="$PS0 $PROMPT_EXIT "
-    fi
+    [ $#metainfo -gt 0 ] && meta="%B[%b ${(pj: :)metainfo} %B]%b"
+
+    parts=($PS0 $meta $PROMPT_EXIT '')
+    export PROMPT="${(pj: :)parts}"
+    unset STATE VENV_NAME GIT_BRANCH_NAME
 }
 
 if [[ -z "${precmd_functions[(R)prompt]}" ]]; then
