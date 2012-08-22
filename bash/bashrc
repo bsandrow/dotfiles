@@ -11,7 +11,7 @@ shopt -s cdspell        # easy on spelling mistakes
 
 set bell-style none
 
-BASHRC_LOCAL="$HOME/.bashrc.local"
+BASHRC_LOCAL="$HOME/.local/bashrc"
 [ -f "$BASHRC_LOCAL" ] && source "$BASHRC_LOCAL"
 
 # vim:ft=sh
