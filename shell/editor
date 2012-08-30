@@ -2,12 +2,12 @@
 # ~~~~~
 
 EDITOR='vim'
-VISUAL='vi'
+VISUAL='vim'
 LESS='-iMR'
 PAGER='less'
 #LESSCHARSET=latin1
 
-if command_exists 'vim'; then
+if ! command_exists 'vim'; then
     EDITOR='vi'
     VISUAL='vi'
 fi
