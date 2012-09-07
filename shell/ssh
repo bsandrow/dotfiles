@@ -4,11 +4,11 @@
 export GRABSSH_DIR="${TMPDIR:-/tmp}"
 
 fixssh () {
-    if [ -f "${GRABSSH}/fixssh" ]; then
-        . "${GRABSSH}/fixssh"
+    if [ -f "${GRABSSH_DIR}/fixssh" ]; then
+        . "${GRABSSH_DIR}/fixssh"
         return 0
     else
-        echo "No ${GRABSSH}/fixssh found!"
+        echo "No ${GRABSSH_DIR}/fixssh found!"
         return 1
     fi
 }
