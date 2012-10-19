@@ -5,7 +5,7 @@ function git_current_branch
 {
     ref=$(git symbolic-ref HEAD 2> /dev/null)
 
-    if [ $? -ne 0 ]; then
+    if [ "$?" != "0" ]; then
         echo "<error>"
         return 1
     else
