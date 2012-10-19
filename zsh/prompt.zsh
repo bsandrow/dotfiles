@@ -23,6 +23,7 @@ function prompt() {
         metainfo+=("$(wrap_meta "venv:${virtualenv_name}")")
     fi
 
+    meta=""
     [ $#metainfo -gt 0 ] && meta="%B[%b ${(pj: :)metainfo} %B]%b"
 
     parts=($PS0 $meta $PROMPT_EXIT '')
