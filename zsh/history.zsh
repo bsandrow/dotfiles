@@ -3,7 +3,7 @@
 
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.zsh_history
+HISTFILE=$HOME/.zsh_history
 
 setopt SHARE_HISTORY        # Share history across sessions
 setopt HIST_IGNORE_SPACE    # commands starting w/ a space don't go into history
