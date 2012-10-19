@@ -7,7 +7,7 @@ function wrap_color() { echo "\$FG[$1]$2\$FG[reset]"; }
 function wrap_meta () { echo "\$FG[005]$*\$FG[reset]"; }
 function bold      () { echo "\$FX[bold]$*\$FX[no-bold]"; }
 
-export PS0="$(wrap_color '202' '%n') in $(wrap_color '107' '%~') on $(wrap_color '001' '%M')"
+export PS0="$(wrap_color '202' '%n') in $(wrap_color '107' '%~') on $(wrap_color '001' '%m')"
 export PROMPT_EXIT="%(0?.$(wrap_color '040' '\$').$(wrap_color '001' '\$'))"
 
 function prompt() {
